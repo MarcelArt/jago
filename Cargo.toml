@@ -1,0 +1,10 @@
+[package]
+name = "jago"
+version = "0.1.1"
+edition = "2021"
+
+[lib]
+crate-type = ["cdylib"] 
+
+[dependencies]
+godot = "0.4.0"

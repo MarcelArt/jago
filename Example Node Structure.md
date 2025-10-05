@@ -1,0 +1,13 @@
+SellingScene (Node2D)
+├── Background (Sprite2D)
+├── Cart (Sprite2D)
+├── CustomerSpawner (Node)
+│   ├── Timer
+│   └── SpawnPoints (Position2D nodes)
+├── CustomerContainer (Node2D)
+├── UI (CanvasLayer)
+│   ├── ClockLabel (Label)
+│   ├── SalesLabel (Label)
+│   ├── StockLabel (Label)
+│   └── FastForwardButton (Button)
+└── EndDayPanel (Control)

@@ -1,0 +1,15 @@
+[configuration]
+entry_symbol = "gdext_rust_init"
+compatibility_minimum = 4.1
+reloadable = true
+
+[libraries]
+linux.debug.x86_64 =     "res://../target/debug/libjago.so"
+linux.release.x86_64 =   "res://../target/release/libjago.so"
+windows.debug.x86_64 =   "res://../target/debug/jago.dll"
+windows.release.x86_64 = "res://../target/release/jago.dll"
+macos.debug =            "res://../target/debug/libjago.dylib"
+macos.release =          "res://../target/release/libjago.dylib"
+macos.debug.arm64 =      "res://../target/debug/libjago.dylib"
+macos.release.arm64 =    "res://../target/release/libjago.dylib"
+        
