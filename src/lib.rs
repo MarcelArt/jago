@@ -5,6 +5,7 @@ use godot::prelude::*;
 mod selling_phase;
 mod customer_spawner;
 mod customer;
+mod utils;
 
 struct GdRust;
 
