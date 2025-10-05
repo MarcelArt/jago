@@ -1,11 +1,19 @@
 use godot::{classes::{CharacterBody2D, ICharacterBody2D, VisibleOnScreenNotifier2D}, prelude::*};
 
+enum CustomerState {
+    Walking,
+    Queue,
+    Leaving,
+}
+
 #[derive(GodotClass)]
 #[class(base=CharacterBody2D)]
 pub struct Customer {
     base: Base<CharacterBody2D>,
     speed_multiplier: f32,
     visibility_notifier: Option<Gd<VisibleOnScreenNotifier2D>>,
+    customer_state: CustomerState,
+    walk_direction: Vector2,
 
     // Change or add your own properties here
     #[export]
@@ -20,6 +28,8 @@ impl ICharacterBody2D for Customer {
             walk_speed: 100.0,
             speed_multiplier: 100.0,
             visibility_notifier: None,
+            customer_state: CustomerState::Walking,
+            walk_direction: Vector2::LEFT,
         }
     }
 
@@ -33,13 +43,17 @@ impl ICharacterBody2D for Customer {
     }
 
     fn process(&mut self, _delta: f64) {
-        self.move_toward_cart(_delta);
+        match self.customer_state {
+            CustomerState::Walking => self.walk(_delta),
+            CustomerState::Queue => {} // Implement queue behavior here
+            CustomerState::Leaving => self.walk(_delta),
+        }
     }  
-}     
+}
 
 impl Customer {
-    fn move_toward_cart(&mut self, delta: f64) {
-        let velocity = Vector2::LEFT * self.walk_speed * delta as f32 * self.speed_multiplier;
+    fn walk(&mut self, delta: f64) {
+        let velocity = self.walk_direction * self.walk_speed * delta as f32 * self.speed_multiplier;
 
         let mut customer = self.base_mut();
         customer.set_velocity(velocity);
@@ -47,6 +61,13 @@ impl Customer {
     }
 
     fn _on_visibility_notifier_screen_exited(&mut self) {
+        if let CustomerState::Leaving = self.customer_state {
+            self.base_mut().queue_free();
+        }
         self.base_mut().queue_free();
+    }
+
+    pub fn set_walk_direction(&mut self, direction: Vector2) {
+        self.walk_direction = direction;
     }
 }

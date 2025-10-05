@@ -6,6 +6,7 @@
 size = Vector2(130, 128)
 
 [node name="Customer" type="Customer"]
+collision_mask = 0
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
 shape = SubResource("RectangleShape2D_xss0h")

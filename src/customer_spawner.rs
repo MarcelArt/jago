@@ -1,3 +1,5 @@
+use std::ops::DerefMut;
+
 use godot::{
     classes::{INode2D, Node2D, RandomNumberGenerator, ResourceLoader, Timer},
     prelude::*,
@@ -64,8 +66,10 @@ impl CustomerSpawner {
             .unwrap()
             .cast::<Customer>();
 
+        let i = rng.randi_range(0, 1) as usize;
         let spawn_points = self.get_spawn_points();
-        let spawn_point = spawn_points.get(0).unwrap();
+        let spawn_point = spawn_points.get(i).unwrap();
+        customer.bind_mut().set_walk_direction(if i == 1 { Vector2::RIGHT } else { Vector2::LEFT });
 
         customer.set_position(spawn_point.get_position());
         self.base_mut().add_child(Some(&customer));
