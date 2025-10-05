@@ -1,5 +1,5 @@
 use godot::{
-    classes::{INode2D, Node2D, ResourceLoader, Timer},
+    classes::{INode2D, Node2D, RandomNumberGenerator, ResourceLoader, Timer},
     prelude::*,
 };
 
@@ -11,6 +11,7 @@ struct CustomerSpawner {
     base: Base<Node2D>,
     timer: Option<Gd<Timer>>,
     customer_scene: Gd<PackedScene>,
+    spawn_chance: f32,
 
     // Change or add your own properties here
     #[export]
@@ -32,6 +33,7 @@ impl INode2D for CustomerSpawner {
             timer: None,
             spawn_points: Array::new(),
             customer_scene: customer_scene.unwrap(),
+            spawn_chance: 0.3,
         }
     }
 
@@ -51,7 +53,12 @@ impl INode2D for CustomerSpawner {
 #[godot_api]
 impl CustomerSpawner {
     fn spawn_customer(&mut self) {
-        godot_print!("Timer timeout - spawn customer");
+        let mut rng = RandomNumberGenerator::new_gd();
+        let spawn_rng = rng.randf();
+        if spawn_rng > self.spawn_chance {
+            return;
+        }
+
         let mut customer = self.customer_scene
             .instantiate()
             .unwrap()
