@@ -14,3 +14,8 @@ config/name="jago"
 run/main_scene="uid://dsd2q64tvv8sn"
 config/features=PackedStringArray("4.5", "Forward Plus")
 config/icon="res://icon.svg"
+
+[layer_names]
+
+2d_physics/layer_1="customer"
+2d_physics/layer_2="cart"

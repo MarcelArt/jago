@@ -1,4 +1,4 @@
-use godot::{classes::{Area2D, CharacterBody2D, ICharacterBody2D, VisibleOnScreenNotifier2D}, prelude::*};
+use godot::{classes::{CharacterBody2D, ICharacterBody2D, VisibleOnScreenNotifier2D}, prelude::*};
 
 use crate::utils::rng;
 
@@ -36,14 +36,12 @@ impl ICharacterBody2D for Customer {
     }
 
     fn ready(&mut self) {
-        godot_print!("register visibility notifier");
         self.visibility_notifier = Some(self.base().get_node_as("VisibleOnScreenNotifier2D"));
         let notifier = self.visibility_notifier.as_ref().unwrap();
         notifier
             .signals()
             .screen_exited()
             .connect_other(&*self, Self::_on_visibility_notifier_screen_exited);
-        godot_print!("finished registering visibility notifier");
     }
 
     fn process(&mut self, _delta: f64) {
@@ -55,6 +53,7 @@ impl ICharacterBody2D for Customer {
     }  
 }
 
+#[godot_api]
 impl Customer {
     fn walk(&mut self, delta: f64) {
         let velocity = self.walk_direction * self.walk_speed * delta as f32 * self.speed_multiplier;
@@ -75,7 +74,9 @@ impl Customer {
         self.walk_direction = direction;
     }
 
-    pub fn decide_to_queue(&mut self, _area_2d: Gd<Area2D>) {
+    #[func]
+    pub fn decide_to_queue(&mut self, _body: Gd<Node2D>) {
+        godot_print!("Customer entered cart area: {}", _body.get_name());
         godot_print!("Deciding to queue");
         let is_wanting_to_queue = rng::check_chance(30.0);
         if is_wanting_to_queue {

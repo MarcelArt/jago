@@ -75,6 +75,9 @@ impl CustomerSpawner {
         let spawn_point = spawn_points.get(i).unwrap();
         gd_customer.set_position(spawn_point.get_position());
         
+        // spawn customer
+        self.base_mut().add_child(Some(&gd_customer));
+        
         // set walk direction
         let mut customer = gd_customer.bind_mut();
         customer.set_walk_direction(if i == 1 { Vector2::RIGHT } else { Vector2::LEFT });
@@ -83,12 +86,8 @@ impl CustomerSpawner {
         let cart_area = self.cart_area.as_ref().unwrap();
         cart_area
             .signals()
-            .area_entered()
+            .body_entered()
             .connect_other(&*customer, Customer::decide_to_queue);
-        
-        // TODO: using to_gd causes panic here find another way to reference customer
-        // spawn customer
-        self.base_mut().add_child(Some(&customer.to_gd()));
     }
 
     #[func]

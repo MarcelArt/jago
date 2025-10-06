@@ -1,18 +1,56 @@
-[gd_scene load_steps=3 format=3 uid="uid://b2cvh0smsu2o8"]
+[gd_scene load_steps=8 format=3 uid="uid://b2cvh0smsu2o8"]
 
-[ext_resource type="Texture2D" uid="uid://cwutjx28imcur" path="res://icon.svg" id="1_ktfjk"]
+[ext_resource type="Texture2D" uid="uid://bdnuq67fu2wi3" path="res://assets/Just Walk Left-Sheet.png" id="1_ktfjk"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_xss0h"]
-size = Vector2(130, 128)
+size = Vector2(98, 260)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_xss0h"]
+atlas = ExtResource("1_ktfjk")
+region = Rect2(0, 0, 160, 320)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_8qg4y"]
+atlas = ExtResource("1_ktfjk")
+region = Rect2(160, 0, 160, 320)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_rjbu2"]
+atlas = ExtResource("1_ktfjk")
+region = Rect2(320, 0, 160, 320)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_qqxhk"]
+atlas = ExtResource("1_ktfjk")
+region = Rect2(480, 0, 160, 320)
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_846g6"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_xss0h")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_8qg4y")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_rjbu2")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_qqxhk")
+}],
+"loop": true,
+"name": &"default",
+"speed": 5.0
+}]
 
 [node name="Customer" type="Customer"]
-collision_mask = 0
+collision_mask = 2
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+position = Vector2(0, 31)
 shape = SubResource("RectangleShape2D_xss0h")
 one_way_collision_margin = 0.0
 
-[node name="Sprite2D" type="Sprite2D" parent="."]
-texture = ExtResource("1_ktfjk")
+[node name="Sprite2D" type="AnimatedSprite2D" parent="."]
+sprite_frames = SubResource("SpriteFrames_846g6")
+frame_progress = 0.7266236
 
 [node name="VisibleOnScreenNotifier2D" type="VisibleOnScreenNotifier2D" parent="."]
