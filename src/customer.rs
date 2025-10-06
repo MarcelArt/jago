@@ -1,4 +1,4 @@
-use godot::{classes::{CharacterBody2D, ICharacterBody2D, VisibleOnScreenNotifier2D}, prelude::*};
+use godot::{classes::{AnimatedSprite2D, CharacterBody2D, ICharacterBody2D, VisibleOnScreenNotifier2D}, prelude::*};
 
 use crate::utils::rng;
 
@@ -16,6 +16,7 @@ pub struct Customer {
     visibility_notifier: Option<Gd<VisibleOnScreenNotifier2D>>,
     customer_state: CustomerState,
     walk_direction: Vector2,
+    animated_sprite: Option<Gd<AnimatedSprite2D>>,
 
     // Change or add your own properties here
     #[export]
@@ -32,6 +33,7 @@ impl ICharacterBody2D for Customer {
             visibility_notifier: None,
             customer_state: CustomerState::Walking,
             walk_direction: Vector2::LEFT,
+            animated_sprite: None,
         }
     }
 
@@ -42,6 +44,10 @@ impl ICharacterBody2D for Customer {
             .signals()
             .screen_exited()
             .connect_other(&*self, Self::_on_visibility_notifier_screen_exited);
+
+        self.animated_sprite = Some(self.base().get_node_as("Sprite2D"));
+        let animated_sprite = self.animated_sprite.as_mut().unwrap();
+        animated_sprite.play();
     }
 
     fn process(&mut self, _delta: f64) {
@@ -72,6 +78,10 @@ impl Customer {
 
     pub fn set_walk_direction(&mut self, direction: Vector2) {
         self.walk_direction = direction;
+        if self.walk_direction == Vector2::RIGHT {
+            let animated_sprite = self.animated_sprite.as_mut().unwrap();
+            animated_sprite.set_flip_h(true);
+        }
     }
 
     #[func]
