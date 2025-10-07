@@ -11,10 +11,9 @@ pub fn coin_toss_bool() -> bool {
     rng.randi_range(0, 1) == 1
 }
 
-#[allow(dead_code)]
-pub fn randf() -> f32 {
+pub fn randf(from: f32, to: f32) -> f32 {
     let mut rng = RandomNumberGenerator::new_gd();
-    rng.randf()
+    rng.randf_range(from, to)
 }
 
 pub fn check_chance(percent: f32) -> bool {

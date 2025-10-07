@@ -73,7 +73,9 @@ impl CustomerSpawner {
         let i = rng::coin_toss() as usize;
         let spawn_points = self.get_spawn_points();
         let spawn_point = spawn_points.get(i).unwrap();
-        gd_customer.set_position(spawn_point.get_position());
+        let y = rng::randf(200.0, 350.0);
+        let spawn_coord = Vector2::new(spawn_point.get_position().x, y);
+        gd_customer.set_position(spawn_coord);
         
         // spawn customer
         self.base_mut().add_child(Some(&gd_customer));

@@ -86,7 +86,13 @@ impl Customer {
 
     #[func]
     pub fn decide_to_queue(&mut self, _body: Gd<Node2D>) {
-        godot_print!("Customer entered cart area: {}", _body.get_name());
+        let gd_self = self.to_gd();
+        let body: Gd<Customer> = _body.cast();
+        
+        if body != gd_self {
+            return;
+        }
+
         godot_print!("Deciding to queue");
         let is_wanting_to_queue = rng::check_chance(30.0);
         if is_wanting_to_queue {
