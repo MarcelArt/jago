@@ -4,7 +4,7 @@ use godot::{
     prelude::*,
 };
 
-use crate::{customer::Customer, utils::rng};
+use crate::{customer::Customer, get_node_by_abs_path, selling_phase::SellingPhase, utils::rng};
 
 #[derive(GodotClass)]
 #[class(base=Node2D)]
@@ -14,6 +14,7 @@ struct CustomerSpawner {
     customer_scene: Gd<PackedScene>,
     spawn_chance: f32,
     cart_area: Option<Gd<Area2D>>,
+    game_manager: Option<Gd<SellingPhase>>,
 
     // Change or add your own properties here
     #[export]
@@ -34,6 +35,7 @@ impl INode2D for CustomerSpawner {
             base,
             timer: None,
             cart_area: None,
+            game_manager: None,
             spawn_points: Array::new(),
             customer_scene: customer_scene.unwrap(),
             spawn_chance: 30.0, // 30% chance to spawn each interval
@@ -43,6 +45,7 @@ impl INode2D for CustomerSpawner {
     fn ready(&mut self) {
         self.timer = Some(self.base().get_node_as("Timer"));
         self.cart_area = Some(self.base().get_parent().unwrap().get_node_as("Cart/Area2D"));
+        self.game_manager = Some(get_node_by_abs_path!(self.base(), "SellingPhase"));
 
         let timer = self.timer.as_ref().unwrap();
         timer
@@ -90,11 +93,16 @@ impl CustomerSpawner {
             .signals()
             .body_entered()
             .connect_other(&*customer, Customer::decide_to_queue);
+
+        let game_manager = self.game_manager.as_ref().unwrap();
+        customer
+            .signals()
+            .on_make_order()
+            .connect_other(&*game_manager, SellingPhase::update_orders);
     }
 
     #[func]
     fn _on_timer_timeout(&mut self) {
         self.spawn_customer();
     }
-
 }

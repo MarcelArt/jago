@@ -4,7 +4,7 @@ use crate::utils::rng;
 
 enum CustomerState {
     Walking,
-    Queue,
+    Waiting,
     Leaving,
 }
 
@@ -53,7 +53,7 @@ impl ICharacterBody2D for Customer {
     fn process(&mut self, _delta: f64) {
         match self.customer_state {
             CustomerState::Walking => self.walk(_delta),
-            CustomerState::Queue => {} // Implement queue behavior here
+            CustomerState::Waiting => {} // Implement queue behavior here
             CustomerState::Leaving => self.walk(_delta),
         }
     }  
@@ -61,6 +61,9 @@ impl ICharacterBody2D for Customer {
 
 #[godot_api]
 impl Customer {
+    #[signal]
+    pub fn on_make_order(customer: Gd<Customer>,amount: i32);
+
     fn walk(&mut self, delta: f64) {
         let velocity = self.walk_direction * self.walk_speed * delta as f32 * self.speed_multiplier;
 
@@ -93,14 +96,20 @@ impl Customer {
             return;
         }
 
-        godot_print!("Deciding to queue");
-        let is_wanting_to_queue = rng::check_chance(30.0);
-        if is_wanting_to_queue {
-            self.customer_state = CustomerState::Queue;
-            godot_print!("Decided to queue");
+        godot_print!("Deciding to buy");
+        let is_buying = rng::check_chance(30.0);
+        if is_buying {
+            self.customer_state = CustomerState::Waiting;
+            self.make_order();
+            godot_print!("Decided to buy");
         } else {
             self.customer_state = CustomerState::Leaving;
             godot_print!("Decided to leave");
         }
+    }
+
+    pub fn make_order(&mut self) {
+        let gd_self = self.to_gd();
+        self.signals().on_make_order().emit(&gd_self, 1);
     }
 }

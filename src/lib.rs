@@ -6,6 +6,7 @@ mod selling_phase;
 mod customer_spawner;
 mod customer;
 mod utils;
+mod macros;
 
 struct GdRust;
 

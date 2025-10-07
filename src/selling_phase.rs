@@ -1,8 +1,10 @@
 use godot::{classes::{INode2D, Label, Node2D}, prelude::*};
 
+use crate::customer::Customer;
+
 #[derive(GodotClass)]
 #[class(base=Node2D)]
-struct SellingPhase {
+pub struct SellingPhase {
     base: Base<Node2D>,
     clock_label: Option<Gd<Label>>,
     current_time: f64,
@@ -57,5 +59,9 @@ impl SellingPhase {
         let minutes = (self.current_time % 60.0).floor() as i32;
         let text = format!("{:02}:{:02}", hours, minutes);
         self.clock_label.as_mut().unwrap().set_text(&text);
+    }
+
+    pub fn update_orders(&mut self, customer: Gd<Customer>,amount: i32) {
+        godot_print!("{} Order received from customer {}", amount, customer.get_name());
     }
 }
