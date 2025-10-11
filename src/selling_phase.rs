@@ -2,6 +2,12 @@ use godot::{classes::{INode2D, Label, Node2D}, prelude::*};
 
 use crate::customer::Customer;
 
+struct CustomerOrder {
+    customer: Gd<Customer>,
+    amount: i32,
+    progress: f32,
+}
+
 #[derive(GodotClass)]
 #[class(base=Node2D)]
 pub struct SellingPhase {
@@ -11,6 +17,8 @@ pub struct SellingPhase {
     end_time: f64,  // End time in minutes (e.g., 20:00 = 1200 minutes)
     is_day_over: bool,
     time_speed: f64, // Time speed multiplier
+    serving_speed: f32,
+    orders: Vec<CustomerOrder>,
     
     // Change or add your own properties here
     #[export]
@@ -28,6 +36,8 @@ impl INode2D for SellingPhase {
             end_time: (17 * 60) as f64, // End at 8:00 PM
             is_day_over: false,
             time_multiplier: 5 as f64, // Default time multiplier
+            serving_speed: 1.0, // Default serving speed
+            orders: Vec::new(),
         }
     }
 
@@ -37,6 +47,7 @@ impl INode2D for SellingPhase {
 
     fn process(&mut self, _delta: f64) {
         self.progress_time(_delta);
+        self.serve_customer(_delta);
     }  
 }     
 
@@ -63,5 +74,23 @@ impl SellingPhase {
 
     pub fn update_orders(&mut self, customer: Gd<Customer>,amount: i32) {
         godot_print!("{} Order received from customer {}", amount, customer.get_name());
+        self.orders.push(CustomerOrder { customer, amount, progress: 0.0 });
+    }
+
+    fn serve_customer(&mut self, delta: f64) {
+        let order = self.orders.get_mut(0);
+        if order.is_none() {
+            return;
+        }
+        let order = order.unwrap();
+        
+        let progress = delta as f32 * self.serving_speed;
+        order.progress += progress;
+        if order.progress >= order.amount as f32 { // order complete remove order queue and change customer state
+            godot_print!("Served customer {}", order.customer.get_name());
+            order.customer.bind_mut().complete_order();
+            godot_print!("Customer paid: {}", order.amount * 8000);
+            self.orders.remove(0);
+        }
     }
 }

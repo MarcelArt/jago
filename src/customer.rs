@@ -21,6 +21,8 @@ pub struct Customer {
     // Change or add your own properties here
     #[export]
     walk_speed: f32,
+    #[export]
+    desire: f32,
 }
 
 #[godot_api]
@@ -34,6 +36,7 @@ impl ICharacterBody2D for Customer {
             customer_state: CustomerState::Walking,
             walk_direction: Vector2::LEFT,
             animated_sprite: None,
+            desire: 30.0,
         }
     }
 
@@ -97,7 +100,7 @@ impl Customer {
         }
 
         godot_print!("Deciding to buy");
-        let is_buying = rng::check_chance(30.0);
+        let is_buying = rng::check_chance(self.desire);
         if is_buying {
             self.customer_state = CustomerState::Waiting;
             self.make_order();
@@ -111,5 +114,9 @@ impl Customer {
     pub fn make_order(&mut self) {
         let gd_self = self.to_gd();
         self.signals().on_make_order().emit(&gd_self, 1);
+    }
+
+    pub fn complete_order(&mut self) {
+        self.customer_state = CustomerState::Leaving;
     }
 }

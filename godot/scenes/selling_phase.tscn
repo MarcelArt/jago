@@ -17,7 +17,6 @@ offset_bottom = 23.0
 spawn_points = [NodePath("SpawnPoint1"), NodePath("SpawnPoint2")]
 
 [node name="Timer" type="Timer" parent="CustomerSpawner"]
-wait_time = 3.0
 autostart = true
 
 [node name="SpawnPoint1" type="Node2D" parent="CustomerSpawner"]
@@ -36,3 +35,5 @@ collision_layer = 2
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Cart/Area2D"]
 position = Vector2(-10, -30)
 shape = SubResource("RectangleShape2D_e42e2")
+
+[node name="Timer" type="Timer" parent="."]

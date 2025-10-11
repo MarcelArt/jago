@@ -12,13 +12,14 @@ struct CustomerSpawner {
     base: Base<Node2D>,
     timer: Option<Gd<Timer>>,
     customer_scene: Gd<PackedScene>,
-    spawn_chance: f32,
     cart_area: Option<Gd<Area2D>>,
     game_manager: Option<Gd<SellingPhase>>,
-
+    
     // Change or add your own properties here
     #[export]
     spawn_points: Array<Gd<Node2D>>,
+    #[export]
+    spawn_chance: f32,
 }
 
 #[godot_api]
@@ -87,13 +88,14 @@ impl CustomerSpawner {
         let mut customer = gd_customer.bind_mut();
         customer.set_walk_direction(if i == 1 { Vector2::RIGHT } else { Vector2::LEFT });
 
-        // register signal
+        // register cart area signal
         let cart_area = self.cart_area.as_ref().unwrap();
         cart_area
             .signals()
             .body_entered()
             .connect_other(&*customer, Customer::decide_to_queue);
 
+        // register customer making order signal
         let game_manager = self.game_manager.as_ref().unwrap();
         customer
             .signals()
