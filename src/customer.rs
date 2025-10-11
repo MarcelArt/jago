@@ -99,15 +99,12 @@ impl Customer {
             return;
         }
 
-        godot_print!("Deciding to buy");
         let is_buying = rng::check_chance(self.desire);
         if is_buying {
             self.customer_state = CustomerState::Waiting;
             self.make_order();
-            godot_print!("Decided to buy");
         } else {
             self.customer_state = CustomerState::Leaving;
-            godot_print!("Decided to leave");
         }
     }
 
@@ -116,7 +113,7 @@ impl Customer {
         self.signals().on_make_order().emit(&gd_self, 1);
     }
 
-    pub fn complete_order(&mut self) {
+    pub fn complete_order(&mut self, _is_bought: bool) {
         self.customer_state = CustomerState::Leaving;
     }
 }

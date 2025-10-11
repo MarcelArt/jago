@@ -21,6 +21,7 @@ pub struct SellingPhase {
     serving_speed: f32,
     orders: Vec<CustomerOrder>,
     money: i32,
+    stock: i32,
     
     // Change or add your own properties here
     #[export]
@@ -42,6 +43,7 @@ impl INode2D for SellingPhase {
             serving_speed: 1.0, // Default serving speed
             orders: Vec::new(),
             money: 0,
+            stock: 10,
         }
     }
 
@@ -80,8 +82,12 @@ impl SellingPhase {
         self.clock_label.as_mut().unwrap().set_text(&text);
     }
 
-    pub fn update_orders(&mut self, customer: Gd<Customer>,amount: i32) {
-        godot_print!("{} Order received from customer {}", amount, customer.get_name());
+    pub fn update_orders(&mut self, mut customer: Gd<Customer>, amount: i32) {
+        if self.stock < amount {
+            customer.bind_mut().complete_order(false);
+            return;
+        }
+        self.stock -= amount;
         self.orders.push(CustomerOrder { customer, amount, progress: 0.0 });
     }
 
@@ -100,7 +106,7 @@ impl SellingPhase {
             order.progress += progress;
             if order.progress >= order.amount as f32 { // order complete remove order queue and change customer state
                 godot_print!("Served customer {}", order.customer.get_name());
-                order.customer.bind_mut().complete_order();
+                order.customer.bind_mut().complete_order(true);
                 paid_amount = order.amount * 8000;
                 self.orders.remove(0);
             }
