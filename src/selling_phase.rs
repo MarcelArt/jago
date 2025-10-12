@@ -1,6 +1,6 @@
-use godot::{classes::{INode2D, Node2D, RichTextLabel}, prelude::*};
+use godot::{classes::{Engine, INode2D, Node2D, RichTextLabel}, prelude::*};
 
-use crate::customer::Customer;
+use crate::{customer::Customer, singletons::game_data::GameDataSingleton};
 
 struct CustomerOrder {
     customer: Gd<Customer>,
@@ -21,7 +21,7 @@ pub struct SellingPhase {
     serving_speed: f32,
     orders: Vec<CustomerOrder>,
     money: i32,
-    stock: i32,
+    // stock: i32,
     
     // Change or add your own properties here
     #[export]
@@ -43,7 +43,7 @@ impl INode2D for SellingPhase {
             serving_speed: 1.0, // Default serving speed
             orders: Vec::new(),
             money: 0,
-            stock: 10,
+            // stock: 10,
         }
     }
 
@@ -83,12 +83,16 @@ impl SellingPhase {
     }
 
     pub fn update_orders(&mut self, mut customer: Gd<Customer>, amount: i32) {
-        if self.stock < amount {
+        let mut game_data: Gd<GameDataSingleton> = Engine::singleton().get_singleton(&StringName::from("GameDataSingleton")).unwrap().cast();
+        let mut game_data = game_data.bind_mut();
+        
+        if game_data.stock < amount {
             customer.bind_mut().complete_order(false);
             return;
         }
-        self.stock -= amount;
+        game_data.stock -= amount;
         self.orders.push(CustomerOrder { customer, amount, progress: 0.0 });
+        godot_print!("Stock: {} -> {}", game_data.stock + amount, game_data.stock);
     }
 
     fn serve_customer(&mut self, delta: f64) {
