@@ -1,11 +1,11 @@
-use godot::{classes::{Button, Engine, INode2D, LineEdit, Node2D}, prelude::*};
+use godot::{classes::{Button, Control, Engine, IControl, LineEdit}, prelude::*};
 
 use crate::singletons::game_data::GameDataSingleton;
 
 #[derive(GodotClass)]
-#[class(base=Node2D)]
+#[class(base=Control)]
 struct PrepPhase {
-    base: Base<Node2D>,
+    base: Base<Control>,
     start_day_button: Option<Gd<Button>>,
     stock_input: Option<Gd<LineEdit>>,
 
@@ -14,8 +14,8 @@ struct PrepPhase {
 }
 
 #[godot_api]
-impl INode2D for PrepPhase {
-    fn init(base: Base<Node2D>) -> Self {
+impl IControl for PrepPhase {
+    fn init(base: Base<Control>) -> Self {
         Self {
             base,
             start_day_button: None,
@@ -24,14 +24,14 @@ impl INode2D for PrepPhase {
     }
 
     fn ready(&mut self) {
-        self.start_day_button = Some(self.base().get_node_as("UI/StartDayButton"));
+        self.start_day_button = Some(self.base().get_node_as("StartDayButton"));
         let start_day_button = self.start_day_button.as_ref().unwrap();
         start_day_button
             .signals()
             .pressed()
             .connect_other(&*self, Self::_on_start_day_button_pressed);
 
-        self.stock_input = Some(self.base().get_node_as("UI/StockInput"));
+        self.stock_input = Some(self.base().get_node_as("StockInput"));
     }
 
     fn process(&mut self, _delta: f64) {
