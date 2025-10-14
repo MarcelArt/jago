@@ -20,6 +20,10 @@ struct CustomerSpawner {
     spawn_points: Array<Gd<Node2D>>,
     #[export]
     spawn_chance: f32,
+    #[export]
+    min_spawn_y: f32,
+    #[export]
+    max_spawn_y: f32,
 }
 
 #[godot_api]
@@ -40,6 +44,8 @@ impl INode2D for CustomerSpawner {
             spawn_points: Array::new(),
             customer_scene: customer_scene.unwrap(),
             spawn_chance: 30.0, // 30% chance to spawn each interval
+            min_spawn_y: 92.0,
+            max_spawn_y: 94.0,
         }
     }
 
@@ -77,7 +83,7 @@ impl CustomerSpawner {
         let i = rng::coin_toss() as usize;
         let spawn_points = self.get_spawn_points();
         let spawn_point = spawn_points.get(i).unwrap();
-        let y = rng::randf(200.0, 350.0);
+        let y = rng::randf(self.min_spawn_y, self.max_spawn_y);
         let spawn_coord = Vector2::new(spawn_point.get_position().x, y);
         gd_customer.set_position(spawn_coord);
         

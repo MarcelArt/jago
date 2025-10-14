@@ -1,9 +1,9 @@
 [gd_scene load_steps=3 format=3 uid="uid://dsd2q64tvv8sn"]
 
-[ext_resource type="Texture2D" uid="uid://bqilqajgq5m7k" path="res://assets/Cart.png" id="1_e42e2"]
+[ext_resource type="Texture2D" uid="uid://dvnx6t8awyro8" path="res://assets/Cart 1x.png" id="1_e42e2"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_e42e2"]
-size = Vector2(280, 656)
+size = Vector2(29, 188)
 
 [node name="SellingPhase" type="SellingPhase"]
 
@@ -30,20 +30,20 @@ spawn_points = [NodePath("SpawnPoint1"), NodePath("SpawnPoint2")]
 autostart = true
 
 [node name="SpawnPoint1" type="Node2D" parent="CustomerSpawner"]
-position = Vector2(1148, 317)
+position = Vector2(320, 97)
 
 [node name="SpawnPoint2" type="Node2D" parent="CustomerSpawner"]
-position = Vector2(2, 329)
+position = Vector2(0, 99)
 
 [node name="Cart" type="Sprite2D" parent="."]
-position = Vector2(640, 360)
+position = Vector2(159, 99)
 texture = ExtResource("1_e42e2")
 
 [node name="Area2D" type="Area2D" parent="Cart"]
 collision_layer = 2
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Cart/Area2D"]
-position = Vector2(-10, -30)
+position = Vector2(-0.5, -8)
 shape = SubResource("RectangleShape2D_e42e2")
 
 [node name="Timer" type="Timer" parent="."]

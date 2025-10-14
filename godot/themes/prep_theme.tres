@@ -1,32 +1,41 @@
-[gd_resource type="Theme" load_steps=5 format=3 uid="uid://dq7q5csia0h20"]
+[gd_resource type="Theme" load_steps=6 format=3 uid="uid://dq7q5csia0h20"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_g1eqw"]
+bg_color = Color(0.52156866, 0.28235295, 0.21176471, 1)
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_ol6mk"]
 bg_color = Color(0.96862745, 0.96862745, 0.96862745, 1)
+corner_radius_top_left = 10
+corner_radius_top_right = 10
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_f21au"]
-content_margin_left = 20.0
-content_margin_right = 20.0
+content_margin_left = 5.0
+content_margin_right = 5.0
 bg_color = Color(0.78, 0.59124, 0.26519996, 1)
 corner_radius_top_left = 10
 corner_radius_top_right = 10
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_38bxq"]
-content_margin_left = 20.0
-content_margin_right = 20.0
+content_margin_left = 5.0
+content_margin_right = 5.0
 bg_color = Color(1, 0.69803923, 0.17254902, 1)
 corner_radius_top_left = 10
 corner_radius_top_right = 10
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_jb656"]
-content_margin_left = 20.0
-content_margin_right = 20.0
+content_margin_left = 5.0
+content_margin_right = 5.0
 bg_color = Color(0.63, 0.40824, 0.025200013, 1)
 corner_radius_top_left = 10
 corner_radius_top_right = 10
 
 [resource]
+Label/font_sizes/font_size = 9
+Panel/styles/panel = SubResource("StyleBoxFlat_g1eqw")
 RichTextLabel/colors/default_color = Color(0.52156866, 0.28235295, 0.21176471, 1)
+RichTextLabel/font_sizes/normal_font_size = 9
 TabContainer/colors/font_selected_color = Color(0.52156866, 0.28235295, 0.21176471, 1)
+TabContainer/font_sizes/font_size = 9
 TabContainer/styles/panel = SubResource("StyleBoxFlat_ol6mk")
 TabContainer/styles/tab_hovered = SubResource("StyleBoxFlat_f21au")
 TabContainer/styles/tab_selected = SubResource("StyleBoxFlat_38bxq")

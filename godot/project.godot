@@ -15,6 +15,14 @@ run/main_scene="uid://dsd2q64tvv8sn"
 config/features=PackedStringArray("4.5", "Forward Plus")
 config/icon="res://icon.svg"
 
+[display]
+
+window/size/viewport_width=320
+window/size/viewport_height=180
+window/size/window_width_override=1280
+window/size/window_height_override=720
+window/stretch/mode="canvas_items"
+
 [gui]
 
 theme/default_font_multichannel_signed_distance_field=true
@@ -23,3 +31,7 @@ theme/default_font_multichannel_signed_distance_field=true
 
 2d_physics/layer_1="customer"
 2d_physics/layer_2="cart"
+
+[rendering]
+
+textures/canvas_textures/default_texture_filter=0

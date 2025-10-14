@@ -100,6 +100,7 @@ impl Customer {
         }
 
         let is_buying = rng::check_chance(self.desire);
+        godot_print!("Customer deciding to queue: {}", is_buying);
         if is_buying {
             self.customer_state = CustomerState::Waiting;
             self.make_order();
