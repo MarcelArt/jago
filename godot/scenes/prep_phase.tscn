@@ -1,7 +1,10 @@
-[gd_scene load_steps=3 format=3 uid="uid://bbs0nub3ktsgb"]
+[gd_scene load_steps=6 format=3 uid="uid://bbs0nub3ktsgb"]
 
 [ext_resource type="Theme" uid="uid://dq7q5csia0h20" path="res://themes/prep_theme.tres" id="1_bo5ya"]
 [ext_resource type="Texture2D" uid="uid://clmsjwdpj5131" path="res://assets/coffee_glass.png" id="2_142ma"]
+[ext_resource type="Texture2D" uid="uid://dtxj8f5t7sv8k" path="res://assets/coffee_bag.png" id="2_mbmje"]
+[ext_resource type="Texture2D" uid="uid://b2h06k0l8s635" path="res://assets/milk_pack.png" id="3_3h0dq"]
+[ext_resource type="Texture2D" uid="uid://hma6pksipvir" path="res://assets/sugar.png" id="4_y0lkf"]
 
 [node name="PrepPhase" type="PrepPhase"]
 anchors_preset = 15
@@ -67,19 +70,120 @@ layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
+offset_left = 9.0
+offset_right = -9.0
 grow_horizontal = 2
 grow_vertical = 2
 
 [node name="RecipeLabel" type="RichTextLabel" parent="TabContainer/Prepare/VBoxContainer"]
 layout_mode = 2
+size_flags_vertical = 8
 text = "Recipe"
 fit_content = true
 
-[node name="TextureRect" type="TextureRect" parent="TabContainer/Prepare/VBoxContainer"]
+[node name="GridContainer" type="GridContainer" parent="TabContainer/Prepare/VBoxContainer"]
+layout_mode = 2
+columns = 2
+
+[node name="CoffeeHBox" type="HBoxContainer" parent="TabContainer/Prepare/VBoxContainer/GridContainer"]
+layout_mode = 2
+
+[node name="TextureRect" type="TextureRect" parent="TabContainer/Prepare/VBoxContainer/GridContainer/CoffeeHBox"]
 layout_mode = 2
 size_flags_vertical = 8
-texture = ExtResource("2_142ma")
+texture = ExtResource("2_mbmje")
 stretch_mode = 2
+
+[node name="RichTextLabel" type="RichTextLabel" parent="TabContainer/Prepare/VBoxContainer/GridContainer/CoffeeHBox"]
+clip_contents = false
+custom_minimum_size = Vector2(60, 0)
+layout_mode = 2
+text = "Owned: 0"
+fit_content = true
+scroll_active = false
+autowrap_mode = 0
+autowrap_trim_flags = 0
+vertical_alignment = 1
+
+[node name="LineEdit" type="LineEdit" parent="TabContainer/Prepare/VBoxContainer/GridContainer/CoffeeHBox"]
+layout_mode = 2
+placeholder_text = "Amount"
+alignment = 1
+virtual_keyboard_type = 2
+
+[node name="MilkHBox" type="HBoxContainer" parent="TabContainer/Prepare/VBoxContainer/GridContainer"]
+layout_mode = 2
+
+[node name="TextureRect" type="TextureRect" parent="TabContainer/Prepare/VBoxContainer/GridContainer/MilkHBox"]
+layout_mode = 2
+size_flags_vertical = 8
+texture = ExtResource("3_3h0dq")
+stretch_mode = 2
+
+[node name="RichTextLabel" type="RichTextLabel" parent="TabContainer/Prepare/VBoxContainer/GridContainer/MilkHBox"]
+clip_contents = false
+custom_minimum_size = Vector2(60, 0)
+layout_mode = 2
+text = "Owned: 0"
+fit_content = true
+scroll_active = false
+autowrap_mode = 0
+autowrap_trim_flags = 0
+vertical_alignment = 1
+
+[node name="LineEdit" type="LineEdit" parent="TabContainer/Prepare/VBoxContainer/GridContainer/MilkHBox"]
+layout_mode = 2
+placeholder_text = "Amount"
+alignment = 1
+virtual_keyboard_type = 2
+
+[node name="SugarHBox" type="HBoxContainer" parent="TabContainer/Prepare/VBoxContainer/GridContainer"]
+layout_mode = 2
+
+[node name="TextureRect" type="TextureRect" parent="TabContainer/Prepare/VBoxContainer/GridContainer/SugarHBox"]
+layout_mode = 2
+size_flags_vertical = 8
+texture = ExtResource("4_y0lkf")
+stretch_mode = 2
+
+[node name="RichTextLabel" type="RichTextLabel" parent="TabContainer/Prepare/VBoxContainer/GridContainer/SugarHBox"]
+clip_contents = false
+custom_minimum_size = Vector2(60, 0)
+layout_mode = 2
+text = "Owned: 0"
+fit_content = true
+scroll_active = false
+autowrap_mode = 0
+autowrap_trim_flags = 0
+vertical_alignment = 1
+
+[node name="LineEdit" type="LineEdit" parent="TabContainer/Prepare/VBoxContainer/GridContainer/SugarHBox"]
+layout_mode = 2
+placeholder_text = "Amount"
+alignment = 1
+virtual_keyboard_type = 2
+
+[node name="HBoxContainer" type="HBoxContainer" parent="TabContainer/Prepare/VBoxContainer/GridContainer"]
+layout_mode = 2
+
+[node name="TextureRect" type="TextureRect" parent="TabContainer/Prepare/VBoxContainer/GridContainer/HBoxContainer"]
+custom_minimum_size = Vector2(21, 0)
+layout_mode = 2
+texture = ExtResource("2_142ma")
+stretch_mode = 6
+
+[node name="RichTextLabel" type="RichTextLabel" parent="TabContainer/Prepare/VBoxContainer/GridContainer/HBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+text = "Owned: 0"
+fit_content = true
+autowrap_mode = 0
+autowrap_trim_flags = 0
+vertical_alignment = 1
+
+[node name="Button" type="Button" parent="TabContainer/Prepare/VBoxContainer/GridContainer/HBoxContainer"]
+layout_mode = 2
+text = "  Save Recipe  "
 
 [node name="Shop" type="Control" parent="TabContainer"]
 visible = false

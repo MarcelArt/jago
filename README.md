@@ -64,3 +64,7 @@ You can now run the project with:
 This project uses crate called godot 0.3.5, for more information, please read the documentation at https://godot-rust.github.io/book/
 
 [^1]: Note it will create the directory in "snake_case"
+
+## Attributions
+https://ghostpixxells.itch.io/pixel-mart
+https://piiixl.itch.io/food
