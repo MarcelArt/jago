@@ -17,3 +17,6 @@ godot/*.translation
 godot/.mono/
 godot/data_*/
 godot/mono_crash.*.json
+
+# Build output
+godot/builds/
