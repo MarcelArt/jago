@@ -68,3 +68,4 @@ This project uses crate called godot 0.3.5, for more information, please read th
 ## Attributions
 https://ghostpixxells.itch.io/pixel-mart
 https://piiixl.itch.io/food
+https://ninjikin.itch.io/treasure
