@@ -82,10 +82,9 @@ anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
-current_tab = 1
+current_tab = 0
 
 [node name="Prepare" type="Control" parent="TabContainer"]
-visible = false
 layout_mode = 2
 metadata/_tab_index = 0
 
@@ -218,11 +217,36 @@ layout_mode = 2
 theme_override_font_sizes/font_size = 6
 text = "  Save Recipe  "
 
+[node name="HBoxContainer" type="HBoxContainer" parent="TabContainer/Prepare/VBoxContainer"]
+layout_mode = 2
+
+[node name="RichTextLabel" type="RichTextLabel" parent="TabContainer/Prepare/VBoxContainer/HBoxContainer"]
+clip_contents = false
+layout_mode = 2
+size_flags_horizontal = 0
+size_flags_vertical = 4
+text = "Set Price"
+fit_content = true
+autowrap_mode = 0
+autowrap_trim_flags = 0
+vertical_alignment = 1
+
+[node name="TextureRect" type="TextureRect" parent="TabContainer/Prepare/VBoxContainer/HBoxContainer"]
+layout_mode = 2
+texture = ExtResource("2_y0lkf")
+stretch_mode = 3
+
+[node name="LineEdit" type="LineEdit" parent="TabContainer/Prepare/VBoxContainer/HBoxContainer"]
+layout_mode = 2
+placeholder_text = "Price"
+alignment = 1
+
 [node name="StartDayButton" type="Button" parent="TabContainer/Prepare/VBoxContainer"]
 layout_mode = 2
 text = "Start Day"
 
 [node name="Shop" type="Control" parent="TabContainer"]
+visible = false
 layout_mode = 2
 metadata/_tab_index = 1
 
