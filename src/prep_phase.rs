@@ -1,4 +1,4 @@
-use godot::{classes::{Button, Control, Engine, IControl, RichTextLabel}, prelude::*};
+use godot::{classes::{Button, Control, Engine, IControl, LineEdit, RichTextLabel}, prelude::*};
 
 use crate::singletons::game_data::GameDataSingleton;
 
@@ -17,6 +17,8 @@ pub struct PrepPhase {
     stock_label: Option<Gd<RichTextLabel>>,
     #[export]
     day_count_label: Option<Gd<RichTextLabel>>,
+    #[export]
+    price_input: Option<Gd<LineEdit>>,
 }
 
 #[godot_api]
@@ -28,11 +30,12 @@ impl IControl for PrepPhase {
             money_label: None,
             stock_label: None,
             day_count_label: None,
+            price_input: None,
         }
     }
 
     fn ready(&mut self) {
-        let mut game_data: Gd<GameDataSingleton> = Engine::singleton().get_singleton(&StringName::from("GameDataSingleton")).unwrap().cast();
+        let mut game_data= GameDataSingleton::get_instance();
         if game_data.bind().is_new_game() {
             game_data.bind_mut().start_new();
         }
@@ -62,7 +65,9 @@ impl PrepPhase {
     }
 
     fn _on_start_day_button_pressed(&mut self) {
-        // let mut game_data: Gd<GameDataSingleton> = Engine::singleton().get_singleton(&StringName::from("GameDataSingleton")).unwrap().cast();
+        let mut game_data= GameDataSingleton::get_instance();
+        game_data.bind_mut().price = self.get_price_input().unwrap().get_text().to_int() as i32;
+        game_data.bind_mut().start_day();
 
         let mut tree = self.base().get_tree().unwrap();
         tree.change_scene_to_file("res://scenes/selling_phase.tscn");

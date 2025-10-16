@@ -1,4 +1,4 @@
-use godot::prelude::*;
+use godot::{classes::Engine, prelude::*};
 
 
 #[derive(Default)]
@@ -23,6 +23,10 @@ pub struct GameDataSingleton {
 
 #[godot_api]
 impl GameDataSingleton {
+    pub fn get_instance() -> Gd<Self> {
+        Engine::singleton().get_singleton(&StringName::from("GameDataSingleton")).unwrap().cast()
+    }
+
     pub fn start_new(&mut self) {
         self.stock = 0;
         self.money = 5_000;
@@ -53,6 +57,19 @@ impl GameDataSingleton {
         let possible_cups = f32::min(possible_cups, sugar_divided);
 
         self.stock = possible_cups.floor() as i32;
+    }
+
+    pub fn start_day(&mut self) {
+        self.day += 1;
+        self.cup -= self.stock;
+        self.inventory.coffee -= self.recipe.coffee;
+        self.inventory.milk -= self.recipe.milk;
+        self.inventory.sugar -= self.recipe.sugar;
+    }
+
+    pub fn add_money(&mut self, amount: i32) -> i32 {
+        self.money += amount;
+        self.money
     }
 }
 

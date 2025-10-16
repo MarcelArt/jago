@@ -1,4 +1,4 @@
-use godot::{classes::{Button, Control, Engine, IControl, LineEdit, RichTextLabel}, prelude::*};
+use godot::{classes::{Button, Control, IControl, LineEdit, RichTextLabel}, prelude::*};
 
 use crate::{prep_phase::PrepPhase, singletons::game_data::GameDataSingleton};
 
@@ -49,7 +49,7 @@ impl IControl for PrepareTab {
     }
 
     fn ready(&mut self) {
-        let mut game_data: Gd<GameDataSingleton> = Engine::singleton().get_singleton(&StringName::from("GameDataSingleton")).unwrap().cast();
+        let mut game_data = GameDataSingleton::get_instance();
         if game_data.bind_mut().is_new_game() {
             game_data.bind_mut().start_new();
         }
@@ -81,7 +81,7 @@ impl IControl for PrepareTab {
 
 impl PrepareTab {
     fn _on_save_recipe_button_pressed(&mut self) {
-        let mut game_data: Gd<GameDataSingleton> = Engine::singleton().get_singleton(&StringName::from("GameDataSingleton")).unwrap().cast();
+        let mut game_data = GameDataSingleton::get_instance();
         
         // Save recipe logic here
         let coffee = self.get_coffee_input().unwrap().get_text().to_float() as f32;

@@ -20,8 +20,6 @@ pub struct SellingPhase {
     time_speed: f64, // Time speed multiplier
     serving_speed: f32,
     orders: Vec<CustomerOrder>,
-    money: i32,
-    // stock: i32,
     
     // Change or add your own properties here
     #[export]
@@ -42,16 +40,15 @@ impl INode2D for SellingPhase {
             time_multiplier: 5 as f64, // Default time multiplier
             serving_speed: 1.0, // Default serving speed
             orders: Vec::new(),
-            money: 0,
-            // stock: 10,
         }
     }
 
     fn ready(&mut self) {
+        let game_data = GameDataSingleton::get_instance();
         self.clock_label = Some(self.base().get_node_as("UI/VBoxContainer/ClockLabel"));
         
         self.money_label = Some(self.base().get_node_as("UI/VBoxContainer/MoneyLabel"));
-        let text = format!("Rp. {}", self.money);
+        let text = format!("K. {}", game_data.bind().money);
         self.money_label.as_mut().unwrap().set_text(&text);
     }
 
@@ -100,6 +97,7 @@ impl SellingPhase {
         
         // mutable borrow self
         {
+            let game_data = GameDataSingleton::get_instance();
             let order = self.orders.get_mut(0);
             if order.is_none() {
                 return;
@@ -111,7 +109,7 @@ impl SellingPhase {
             if order.progress >= order.amount as f32 { // order complete remove order queue and change customer state
                 godot_print!("Served customer {}", order.customer.get_name());
                 order.customer.bind_mut().complete_order(true);
-                paid_amount = order.amount * 8000;
+                paid_amount = order.amount * game_data.bind().price;
                 self.orders.remove(0);
             }
         }
@@ -120,8 +118,9 @@ impl SellingPhase {
     }
 
     fn getting_paid(&mut self, amount: i32) {
-        self.money += amount;
-        let text = format!("Rp. {}", self.money);
+        let mut game_data = GameDataSingleton::get_instance();
+        let money = game_data.bind_mut().add_money(amount);
+        let text = format!("Rp. {}", money);
         self.money_label.as_mut().unwrap().set_text(&text);
     }
 }
