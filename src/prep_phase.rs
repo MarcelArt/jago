@@ -1,4 +1,4 @@
-use godot::{classes::{Button, Control, Engine, IControl, LineEdit, RichTextLabel}, prelude::*};
+use godot::{classes::{Button, Control, IControl, LineEdit, RichTextLabel}, prelude::*};
 
 use crate::singletons::game_data::GameDataSingleton;
 
