@@ -7,10 +7,10 @@
 [ext_resource type="Texture2D" uid="uid://b2h06k0l8s635" path="res://assets/milk_pack.png" id="3_3h0dq"]
 [ext_resource type="Texture2D" uid="uid://hma6pksipvir" path="res://assets/sugar.png" id="4_y0lkf"]
 
-[node name="PrepPhase" type="PrepPhase" node_paths=PackedStringArray("start_day_button", "save_recipe_button", "money_label", "day_count_label")]
+[node name="PrepPhase" type="PrepPhase" node_paths=PackedStringArray("start_day_button", "money_label", "stock_label", "day_count_label")]
 start_day_button = NodePath("TabContainer/Prepare/VBoxContainer/StartDayButton")
-save_recipe_button = NodePath("TabContainer/Prepare/VBoxContainer/GridContainer/RecipeHBox/SaveRecipeButton")
 money_label = NodePath("Panel/StockHBox/MoneyLabel")
+stock_label = NodePath("Panel/StockHBox/StockLabel")
 day_count_label = NodePath("Panel/DayCountLabel")
 anchors_preset = 15
 anchor_right = 1.0
@@ -88,7 +88,17 @@ grow_horizontal = 2
 grow_vertical = 2
 current_tab = 0
 
-[node name="Prepare" type="Control" parent="TabContainer"]
+[node name="Prepare" type="PrepareTab" parent="TabContainer" node_paths=PackedStringArray("coffee_label", "milk_label", "sugar_label", "cup_label", "coffee_input", "milk_input", "sugar_input", "price_input", "save_recipe_button", "prep_phase")]
+coffee_label = NodePath("VBoxContainer/GridContainer/CoffeeHBox/CoffeeLabel")
+milk_label = NodePath("VBoxContainer/GridContainer/MilkHBox/MilkLabel")
+sugar_label = NodePath("VBoxContainer/GridContainer/SugarHBox/SugarLabel")
+cup_label = NodePath("VBoxContainer/GridContainer/RecipeHBox/CupLabel")
+coffee_input = NodePath("VBoxContainer/GridContainer/CoffeeHBox/CoffeeInput")
+milk_input = NodePath("VBoxContainer/GridContainer/MilkHBox/MilkInput")
+sugar_input = NodePath("VBoxContainer/GridContainer/SugarHBox/SugarInput")
+price_input = NodePath("VBoxContainer/HBoxContainer/PriceInput")
+save_recipe_button = NodePath("VBoxContainer/GridContainer/RecipeHBox/SaveRecipeButton")
+prep_phase = NodePath("../..")
 layout_mode = 2
 metadata/_tab_index = 0
 
@@ -124,7 +134,7 @@ size_flags_vertical = 8
 texture = ExtResource("2_mbmje")
 stretch_mode = 2
 
-[node name="RichTextLabel" type="RichTextLabel" parent="TabContainer/Prepare/VBoxContainer/GridContainer/CoffeeHBox"]
+[node name="CoffeeLabel" type="RichTextLabel" parent="TabContainer/Prepare/VBoxContainer/GridContainer/CoffeeHBox"]
 clip_contents = false
 custom_minimum_size = Vector2(60, 0)
 layout_mode = 2
@@ -135,7 +145,7 @@ autowrap_mode = 0
 autowrap_trim_flags = 0
 vertical_alignment = 1
 
-[node name="LineEdit" type="LineEdit" parent="TabContainer/Prepare/VBoxContainer/GridContainer/CoffeeHBox"]
+[node name="CoffeeInput" type="LineEdit" parent="TabContainer/Prepare/VBoxContainer/GridContainer/CoffeeHBox"]
 layout_mode = 2
 placeholder_text = "Amount"
 alignment = 1
@@ -150,7 +160,7 @@ size_flags_vertical = 8
 texture = ExtResource("3_3h0dq")
 stretch_mode = 2
 
-[node name="RichTextLabel" type="RichTextLabel" parent="TabContainer/Prepare/VBoxContainer/GridContainer/MilkHBox"]
+[node name="MilkLabel" type="RichTextLabel" parent="TabContainer/Prepare/VBoxContainer/GridContainer/MilkHBox"]
 clip_contents = false
 custom_minimum_size = Vector2(60, 0)
 layout_mode = 2
@@ -161,7 +171,7 @@ autowrap_mode = 0
 autowrap_trim_flags = 0
 vertical_alignment = 1
 
-[node name="LineEdit" type="LineEdit" parent="TabContainer/Prepare/VBoxContainer/GridContainer/MilkHBox"]
+[node name="MilkInput" type="LineEdit" parent="TabContainer/Prepare/VBoxContainer/GridContainer/MilkHBox"]
 layout_mode = 2
 placeholder_text = "Amount"
 alignment = 1
@@ -176,7 +186,7 @@ size_flags_vertical = 8
 texture = ExtResource("4_y0lkf")
 stretch_mode = 2
 
-[node name="RichTextLabel" type="RichTextLabel" parent="TabContainer/Prepare/VBoxContainer/GridContainer/SugarHBox"]
+[node name="SugarLabel" type="RichTextLabel" parent="TabContainer/Prepare/VBoxContainer/GridContainer/SugarHBox"]
 clip_contents = false
 custom_minimum_size = Vector2(60, 0)
 layout_mode = 2
@@ -187,7 +197,7 @@ autowrap_mode = 0
 autowrap_trim_flags = 0
 vertical_alignment = 1
 
-[node name="LineEdit" type="LineEdit" parent="TabContainer/Prepare/VBoxContainer/GridContainer/SugarHBox"]
+[node name="SugarInput" type="LineEdit" parent="TabContainer/Prepare/VBoxContainer/GridContainer/SugarHBox"]
 layout_mode = 2
 placeholder_text = "Amount"
 alignment = 1
@@ -202,7 +212,7 @@ layout_mode = 2
 texture = ExtResource("2_142ma")
 stretch_mode = 6
 
-[node name="RichTextLabel" type="RichTextLabel" parent="TabContainer/Prepare/VBoxContainer/GridContainer/RecipeHBox"]
+[node name="CupLabel" type="RichTextLabel" parent="TabContainer/Prepare/VBoxContainer/GridContainer/RecipeHBox"]
 layout_mode = 2
 size_flags_horizontal = 3
 text = "Owned: 0"
@@ -240,7 +250,7 @@ layout_mode = 2
 texture = ExtResource("2_y0lkf")
 stretch_mode = 3
 
-[node name="LineEdit" type="LineEdit" parent="TabContainer/Prepare/VBoxContainer/HBoxContainer"]
+[node name="PriceInput" type="LineEdit" parent="TabContainer/Prepare/VBoxContainer/HBoxContainer"]
 layout_mode = 2
 placeholder_text = "Price"
 alignment = 1

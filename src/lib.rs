@@ -8,6 +8,7 @@ mod selling_phase;
 mod customer_spawner;
 mod customer;
 mod prep_phase;
+mod prepare_tab;
 mod utils;
 mod macros;
 mod singletons;
