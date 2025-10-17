@@ -1,6 +1,6 @@
 use godot::{classes::{Button, Control, IControl, LineEdit, RichTextLabel}, prelude::*};
 
-use crate::{prep_phase::PrepPhase, singletons::game_data::GameDataSingleton};
+use crate::{prep_phase::PrepPhase, shop_tab::ShopTab, singletons::game_data::GameDataSingleton};
 
 #[derive(GodotClass)]
 #[class(base=Control)]
@@ -28,6 +28,8 @@ struct PrepareTab {
     save_recipe_button: Option<Gd<Button>>,
     #[export]
     prep_phase: Option<Gd<PrepPhase>>,
+    #[export]
+    shop_tab: Option<Gd<ShopTab>>,
 }
 
 #[godot_api]
@@ -45,6 +47,7 @@ impl IControl for PrepareTab {
             price_input: None,
             save_recipe_button: None,
             prep_phase: None,
+            shop_tab: None,
         }
     }
 
@@ -71,6 +74,11 @@ impl IControl for PrepareTab {
             .signals()
             .pressed()
             .connect_other(&*self, Self::_on_save_recipe_button_pressed);
+
+        let shop_tab = self.get_shop_tab().unwrap();
+        shop_tab.signals()
+            .on_buy_success()
+            .connect_other(&*self, Self::update_inventory);
         
     }
 
@@ -93,5 +101,14 @@ impl PrepareTab {
 
         let prep_phase = self.get_prep_phase();
         prep_phase.unwrap().bind_mut().update_stock(stock);
+    }
+
+    fn update_inventory(&mut self) {
+        let game_data = GameDataSingleton::get_instance();
+        let inventory = &game_data.bind().inventory;
+        self.get_coffee_label().unwrap().set_text(&format!("Owned: {} g", inventory.coffee));
+        self.get_milk_label().unwrap().set_text(&format!("Owned: {} mL", inventory.milk));
+        self.get_sugar_label().unwrap().set_text(&format!("Owned: {} g", inventory.sugar));
+        self.get_cup_label().unwrap().set_text(&format!("Owned: {}", game_data.bind().cup));
     }
 }

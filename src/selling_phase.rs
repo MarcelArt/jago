@@ -120,7 +120,7 @@ impl SellingPhase {
     fn getting_paid(&mut self, amount: i32) {
         let mut game_data = GameDataSingleton::get_instance();
         let money = game_data.bind_mut().add_money(amount);
-        let text = format!("Rp. {}", money);
+        let text = format!("K. {}", money);
         self.money_label.as_mut().unwrap().set_text(&text);
     }
 }

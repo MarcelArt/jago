@@ -7,12 +7,13 @@
 [ext_resource type="Texture2D" uid="uid://b2h06k0l8s635" path="res://assets/milk_pack.png" id="3_3h0dq"]
 [ext_resource type="Texture2D" uid="uid://hma6pksipvir" path="res://assets/sugar.png" id="4_y0lkf"]
 
-[node name="PrepPhase" type="PrepPhase" node_paths=PackedStringArray("start_day_button", "money_label", "stock_label", "day_count_label", "price_input")]
+[node name="PrepPhase" type="PrepPhase" node_paths=PackedStringArray("start_day_button", "money_label", "stock_label", "day_count_label", "price_input", "shop_tab")]
 start_day_button = NodePath("TabContainer/Prepare/VBoxContainer/StartDayButton")
 money_label = NodePath("Panel/StockHBox/MoneyLabel")
 stock_label = NodePath("Panel/StockHBox/StockLabel")
 day_count_label = NodePath("Panel/DayCountLabel")
 price_input = NodePath("TabContainer/Prepare/VBoxContainer/HBoxContainer/PriceInput")
+shop_tab = NodePath("TabContainer/Shop")
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
@@ -89,7 +90,7 @@ grow_horizontal = 2
 grow_vertical = 2
 current_tab = 0
 
-[node name="Prepare" type="PrepareTab" parent="TabContainer" node_paths=PackedStringArray("coffee_label", "milk_label", "sugar_label", "cup_label", "coffee_input", "milk_input", "sugar_input", "price_input", "save_recipe_button", "prep_phase")]
+[node name="Prepare" type="PrepareTab" parent="TabContainer" node_paths=PackedStringArray("coffee_label", "milk_label", "sugar_label", "cup_label", "coffee_input", "milk_input", "sugar_input", "price_input", "save_recipe_button", "prep_phase", "shop_tab")]
 coffee_label = NodePath("VBoxContainer/GridContainer/CoffeeHBox/CoffeeLabel")
 milk_label = NodePath("VBoxContainer/GridContainer/MilkHBox/MilkLabel")
 sugar_label = NodePath("VBoxContainer/GridContainer/SugarHBox/SugarLabel")
@@ -100,6 +101,7 @@ sugar_input = NodePath("VBoxContainer/GridContainer/SugarHBox/SugarInput")
 price_input = NodePath("VBoxContainer/HBoxContainer/PriceInput")
 save_recipe_button = NodePath("VBoxContainer/GridContainer/RecipeHBox/SaveRecipeButton")
 prep_phase = NodePath("../..")
+shop_tab = NodePath("../Shop")
 layout_mode = 2
 metadata/_tab_index = 0
 
@@ -263,7 +265,13 @@ alignment = 1
 layout_mode = 2
 text = "Start Day"
 
-[node name="Shop" type="Control" parent="TabContainer"]
+[node name="Shop" type="ShopTab" parent="TabContainer" node_paths=PackedStringArray("coffee_input", "milk_input", "sugar_input", "cup_input", "money_label", "buy_button")]
+coffee_input = NodePath("ScrollContainer/VBoxContainer/CoffeeHBox/CoffeeInput")
+milk_input = NodePath("ScrollContainer/VBoxContainer/MilkHBox/MilkInput")
+sugar_input = NodePath("ScrollContainer/VBoxContainer/SugarHBox/SugarInput")
+cup_input = NodePath("ScrollContainer/VBoxContainer/CupHBox/CupInput")
+money_label = NodePath("ScrollContainer/VBoxContainer/HBoxContainer/HBoxContainer/MoneyLabel")
+buy_button = NodePath("ScrollContainer/VBoxContainer/HBoxContainer/BuyButton")
 visible = false
 layout_mode = 2
 metadata/_tab_index = 1
@@ -297,7 +305,7 @@ stretch_mode = 2
 clip_contents = false
 custom_minimum_size = Vector2(60, 0)
 layout_mode = 2
-text = "Coffee"
+text = "Coffee (300g)"
 fit_content = true
 scroll_active = false
 autowrap_mode = 0
@@ -324,16 +332,17 @@ stretch_mode = 5
 [node name="MoneyLabel" type="RichTextLabel" parent="TabContainer/Shop/ScrollContainer/VBoxContainer/CoffeeHBox"]
 layout_mode = 2
 size_flags_horizontal = 3
-text = "100000"
+text = "120"
 fit_content = true
 autowrap_mode = 0
 autowrap_trim_flags = 0
 vertical_alignment = 1
 
-[node name="LineEdit" type="LineEdit" parent="TabContainer/Shop/ScrollContainer/VBoxContainer/CoffeeHBox"]
+[node name="CoffeeInput" type="LineEdit" parent="TabContainer/Shop/ScrollContainer/VBoxContainer/CoffeeHBox"]
 layout_mode = 2
 size_flags_horizontal = 4
 size_flags_vertical = 4
+text = "0"
 placeholder_text = "Amount"
 alignment = 1
 virtual_keyboard_type = 2
@@ -351,7 +360,7 @@ stretch_mode = 2
 clip_contents = false
 custom_minimum_size = Vector2(60, 0)
 layout_mode = 2
-text = "Milk"
+text = "Milk (1000mL)"
 fit_content = true
 scroll_active = false
 autowrap_mode = 0
@@ -378,16 +387,17 @@ stretch_mode = 5
 [node name="MoneyLabel" type="RichTextLabel" parent="TabContainer/Shop/ScrollContainer/VBoxContainer/MilkHBox"]
 layout_mode = 2
 size_flags_horizontal = 3
-text = "100000"
+text = "30"
 fit_content = true
 autowrap_mode = 0
 autowrap_trim_flags = 0
 vertical_alignment = 1
 
-[node name="LineEdit" type="LineEdit" parent="TabContainer/Shop/ScrollContainer/VBoxContainer/MilkHBox"]
+[node name="MilkInput" type="LineEdit" parent="TabContainer/Shop/ScrollContainer/VBoxContainer/MilkHBox"]
 layout_mode = 2
 size_flags_horizontal = 4
 size_flags_vertical = 4
+text = "0"
 placeholder_text = "Amount"
 alignment = 1
 virtual_keyboard_type = 2
@@ -405,7 +415,7 @@ stretch_mode = 2
 clip_contents = false
 custom_minimum_size = Vector2(60, 0)
 layout_mode = 2
-text = "Sugar"
+text = "Sugar (1000g)"
 fit_content = true
 scroll_active = false
 autowrap_mode = 0
@@ -432,16 +442,17 @@ stretch_mode = 5
 [node name="MoneyLabel" type="RichTextLabel" parent="TabContainer/Shop/ScrollContainer/VBoxContainer/SugarHBox"]
 layout_mode = 2
 size_flags_horizontal = 3
-text = "100000"
+text = "20"
 fit_content = true
 autowrap_mode = 0
 autowrap_trim_flags = 0
 vertical_alignment = 1
 
-[node name="LineEdit" type="LineEdit" parent="TabContainer/Shop/ScrollContainer/VBoxContainer/SugarHBox"]
+[node name="SugarInput" type="LineEdit" parent="TabContainer/Shop/ScrollContainer/VBoxContainer/SugarHBox"]
 layout_mode = 2
 size_flags_horizontal = 4
 size_flags_vertical = 4
+text = "0"
 placeholder_text = "Amount"
 alignment = 1
 virtual_keyboard_type = 2
@@ -459,7 +470,7 @@ stretch_mode = 5
 clip_contents = false
 custom_minimum_size = Vector2(60, 0)
 layout_mode = 2
-text = "Coffee"
+text = "Cups (50)"
 fit_content = true
 scroll_active = false
 autowrap_mode = 0
@@ -486,16 +497,17 @@ stretch_mode = 5
 [node name="MoneyLabel" type="RichTextLabel" parent="TabContainer/Shop/ScrollContainer/VBoxContainer/CupHBox"]
 layout_mode = 2
 size_flags_horizontal = 3
-text = "100000"
+text = "50"
 fit_content = true
 autowrap_mode = 0
 autowrap_trim_flags = 0
 vertical_alignment = 1
 
-[node name="LineEdit" type="LineEdit" parent="TabContainer/Shop/ScrollContainer/VBoxContainer/CupHBox"]
+[node name="CupInput" type="LineEdit" parent="TabContainer/Shop/ScrollContainer/VBoxContainer/CupHBox"]
 layout_mode = 2
 size_flags_horizontal = 4
 size_flags_vertical = 4
+text = "0"
 placeholder_text = "Amount"
 alignment = 1
 virtual_keyboard_type = 2
@@ -525,13 +537,13 @@ stretch_mode = 5
 [node name="MoneyLabel" type="RichTextLabel" parent="TabContainer/Shop/ScrollContainer/VBoxContainer/HBoxContainer/HBoxContainer"]
 layout_mode = 2
 size_flags_horizontal = 8
-text = "100000"
+text = "0"
 fit_content = true
 autowrap_mode = 0
 autowrap_trim_flags = 0
 vertical_alignment = 1
 
-[node name="Button" type="Button" parent="TabContainer/Shop/ScrollContainer/VBoxContainer/HBoxContainer"]
+[node name="BuyButton" type="Button" parent="TabContainer/Shop/ScrollContainer/VBoxContainer/HBoxContainer"]
 custom_minimum_size = Vector2(42, 0)
 layout_mode = 2
 size_flags_horizontal = 10

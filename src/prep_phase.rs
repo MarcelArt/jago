@@ -1,6 +1,6 @@
 use godot::{classes::{Button, Control, IControl, LineEdit, RichTextLabel}, prelude::*};
 
-use crate::singletons::game_data::GameDataSingleton;
+use crate::{shop_tab::ShopTab, singletons::game_data::GameDataSingleton};
 
 
 #[derive(GodotClass)]
@@ -19,6 +19,8 @@ pub struct PrepPhase {
     day_count_label: Option<Gd<RichTextLabel>>,
     #[export]
     price_input: Option<Gd<LineEdit>>,
+    #[export]
+    shop_tab: Option<Gd<ShopTab>>,
 }
 
 #[godot_api]
@@ -31,6 +33,7 @@ impl IControl for PrepPhase {
             stock_label: None,
             day_count_label: None,
             price_input: None,
+            shop_tab: None,
         }
     }
 
@@ -50,6 +53,11 @@ impl IControl for PrepPhase {
             .signals()
             .pressed()
             .connect_other(&*self, Self::_on_start_day_button_pressed);
+
+        let shop_tab = self.get_shop_tab().unwrap();
+        shop_tab.signals()
+            .on_buy_success()
+            .connect_other(&*self, Self::update_money_label);
     }
 
     fn process(&mut self, _delta: f64) {
@@ -71,5 +79,10 @@ impl PrepPhase {
 
         let mut tree = self.base().get_tree().unwrap();
         tree.change_scene_to_file("res://scenes/selling_phase.tscn");
+    }
+
+    fn update_money_label(&mut self) {
+        let game_data = GameDataSingleton::get_instance();
+        self.get_money_label().unwrap().set_text(&format!("{}", game_data.bind().money));
     }
 }
