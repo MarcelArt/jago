@@ -1,4 +1,4 @@
-use godot::{classes::{INode2D, Node2D, RichTextLabel}, prelude::*};
+use godot::{classes::{Button, INode2D, Node2D, RichTextLabel}, prelude::*};
 
 use crate::{customer::Customer, enums::customer_feedback::CustomerFeedback, singletons::game_data::GameDataSingleton};
 
@@ -39,6 +39,8 @@ pub struct SellingPhase {
     day_label: Option<Gd<RichTextLabel>>,
     #[export]
     stock_label: Option<Gd<RichTextLabel>>,
+    #[export]
+    skip_button: Option<Gd<Button>>,
 }
 
 #[godot_api]
@@ -53,6 +55,7 @@ impl INode2D for SellingPhase {
             dislike_label: None,
             day_label: None,
             stock_label: None,
+            skip_button: None,
             current_time: (8 * 60) as f64, // Start at 8:00 AM
             time_speed: 1 as f64, // Normal speed
             end_time: (17 * 60) as f64, // End at 8:00 PM
@@ -72,7 +75,14 @@ impl INode2D for SellingPhase {
         let text = format!("{}", game_data.bind().money);
         self.money_label.as_mut().unwrap().set_text(&text);
 
-        self.get_day_label().unwrap().set_text(&format!("{}", game_data.bind().day));
+        self.get_day_label().unwrap().set_text(&format!("Day {}", game_data.bind().day));
+
+        self.get_stock_label().unwrap().set_text(&format!("Stock: {}", game_data.bind().stock));
+
+        self.get_skip_button().unwrap()
+            .signals()
+            .pressed()
+            .connect_other(&*self, Self::end_day);
     }
 
     fn process(&mut self, _delta: f64) {
@@ -113,7 +123,7 @@ impl SellingPhase {
         game_data.bind_mut().stock -= amount;
         self.orders.push(CustomerOrder { customer, amount, progress: 0.0 });
         godot_print!("Stock: {} -> {}", game_data.bind().stock + amount, game_data.bind().stock);
-        self.get_stock_label().unwrap().set_text(&format!("{}", game_data.bind().stock));
+        self.get_stock_label().unwrap().set_text(&format!("Stock: {}", game_data.bind().stock));
     }
 
     fn serve_customer(&mut self, delta: f64) {
@@ -174,5 +184,14 @@ impl SellingPhase {
     fn increase_dislike_count(&mut self) {
         self.dislike_count += 1;
         self.get_dislike_label().unwrap().set_text(&format!("{}", self.dislike_count));
+    }
+
+    fn end_day(&mut self) {
+        let mut game_data = GameDataSingleton::get_instance();
+        game_data.bind_mut().day += 1;
+        game_data.bind_mut().stock = 0;
+
+        let mut tree = self.base().get_tree().unwrap();
+        tree.change_scene_to_file("res://scenes/prep_phase.tscn");
     }
 }

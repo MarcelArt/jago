@@ -64,7 +64,7 @@ impl GameDataSingleton {
     }
 
     pub fn start_day(&mut self) {
-        self.day += 1;
+        // self.day += 1;
         self.cup -= self.stock;
         self.inventory.coffee -= self.recipe.coffee;
         self.inventory.milk -= self.recipe.milk;
