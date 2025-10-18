@@ -32,7 +32,7 @@ impl GameDataSingleton {
 
     pub fn start_new(&mut self) {
         self.stock = 0;
-        self.money = 5_000;
+        self.money = 300;
         self.day = 1;
         self.inventory = CoffeeComponent {
             coffee: 300.0,

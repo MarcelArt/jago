@@ -1,6 +1,6 @@
 
 use godot::{
-    classes::{Area2D, INode2D, Node2D, ResourceLoader, Timer},
+    classes::{Area2D, INode2D, Node2D, Timer},
     prelude::*,
 };
 
