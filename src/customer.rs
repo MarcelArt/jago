@@ -1,4 +1,4 @@
-use godot::{classes::{AnimatedSprite2D, CharacterBody2D, ICharacterBody2D, VisibleOnScreenNotifier2D}, global::clampf, prelude::*};
+use godot::{classes::{AnimatedSprite2D, CharacterBody2D, ICharacterBody2D, Sprite2D, VisibleOnScreenNotifier2D}, global::clampf, prelude::*};
 
 use crate::{customer_variant::CustomerVariant, enums::customer_feedback::CustomerFeedback, singletons::game_data::GameDataSingleton, utils::rng};
 
@@ -22,9 +22,13 @@ pub struct Customer {
     #[export]
     walk_speed: f32,
     #[export]
-    desire: f32,
-    #[export]
     variant: Option<Gd<CustomerVariant>>,
+    #[export]
+    love_bubble: Option<Gd<Sprite2D>>,
+    #[export]
+    like_bubble: Option<Gd<Sprite2D>>,
+    #[export]
+    dislike_bubble: Option<Gd<Sprite2D>>,
 }
 
 #[godot_api]
@@ -38,8 +42,10 @@ impl ICharacterBody2D for Customer {
             customer_state: CustomerState::Walking,
             walk_direction: Vector2::LEFT,
             animated_sprite: None,
-            desire: 30.0,
             variant: None,
+            love_bubble: None,
+            like_bubble: None,
+            dislike_bubble: None,
         }
     }
 
@@ -117,7 +123,13 @@ impl Customer {
         self.signals().on_make_order().emit(&gd_self, 1);
     }
 
-    pub fn complete_order(&mut self, _is_bought: bool) {
+    pub fn complete_order(&mut self, is_bought: bool) {
+        self.customer_state = CustomerState::Leaving;
+
+        if !is_bought {
+            return;
+        }
+
         let mut game_data = GameDataSingleton::get_instance();
         let feedback: CustomerFeedback;
         {
@@ -134,10 +146,16 @@ impl Customer {
             let score = clampf(score as f64, 0.0, 1.0);
             
             if score > 0.85 {
+                let mut love_bubble = self.get_love_bubble().unwrap();
+                love_bubble.set_visible(true);
                 feedback = CustomerFeedback::Love;
             } else if score > 0.5 {
+                let mut like_bubble = self.get_like_bubble().unwrap();
+                like_bubble.set_visible(true);
                 feedback = CustomerFeedback::Like;
             } else {
+                let mut dislike_bubble = self.get_dislike_bubble().unwrap();
+                dislike_bubble.set_visible(true);
                 feedback = CustomerFeedback::Dislike;
             }
 
@@ -152,8 +170,6 @@ impl Customer {
         }
 
         game_data.bind_mut().update_favorability(feedback);
-
-        self.customer_state = CustomerState::Leaving;
     }
 
     fn should_buy(&mut self) -> bool {

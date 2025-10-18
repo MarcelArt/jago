@@ -1,7 +1,10 @@
-[gd_scene load_steps=9 format=3 uid="uid://b2cvh0smsu2o8"]
+[gd_scene load_steps=12 format=3 uid="uid://b2cvh0smsu2o8"]
 
 [ext_resource type="Texture2D" uid="uid://doui6o0ima342" path="res://assets/Just Walk Left 1x.png" id="1_ktfjk"]
 [ext_resource type="CustomerVariant" uid="uid://dp0r8lgxt4y3t" path="res://resources/office_worker_male.tres" id="1_xss0h"]
+[ext_resource type="Texture2D" uid="uid://b24i8hxn7onea" path="res://assets/emote_heart.png" id="3_qqxhk"]
+[ext_resource type="Texture2D" uid="uid://bai6icrojtm5i" path="res://assets/emote_faceHappy.png" id="4_846g6"]
+[ext_resource type="Texture2D" uid="uid://bl42ugdx6pfnw" path="res://assets/emote_faceSad.png" id="5_qj8gj"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_xss0h"]
 size = Vector2(12, 26)
@@ -42,10 +45,12 @@ animations = [{
 "speed": 5.0
 }]
 
-[node name="Customer" type="Customer"]
+[node name="Customer" type="Customer" node_paths=PackedStringArray("love_bubble", "like_bubble", "dislike_bubble")]
 walk_speed = 50.0
-desire = 99.0
 variant = ExtResource("1_xss0h")
+love_bubble = NodePath("ThoughtBubblePoint/LoveBubble")
+like_bubble = NodePath("ThoughtBubblePoint/LikeBubble")
+dislike_bubble = NodePath("ThoughtBubblePoint/DislikeBubble")
 collision_mask = 2
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
@@ -59,3 +64,18 @@ frame = 1
 frame_progress = 0.12149496
 
 [node name="VisibleOnScreenNotifier2D" type="VisibleOnScreenNotifier2D" parent="."]
+
+[node name="ThoughtBubblePoint" type="Node2D" parent="."]
+position = Vector2(0, -19)
+
+[node name="LoveBubble" type="Sprite2D" parent="ThoughtBubblePoint"]
+visible = false
+texture = ExtResource("3_qqxhk")
+
+[node name="LikeBubble" type="Sprite2D" parent="ThoughtBubblePoint"]
+visible = false
+texture = ExtResource("4_846g6")
+
+[node name="DislikeBubble" type="Sprite2D" parent="ThoughtBubblePoint"]
+visible = false
+texture = ExtResource("5_qj8gj")
