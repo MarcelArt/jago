@@ -1,3 +1,6 @@
 [gd_resource type="CustomerVariant" format=3 uid="uid://dp0r8lgxt4y3t"]
 
 [resource]
+coffee_pref = 9.0
+milk_pref = 90.0
+sugar_pref = 7.0

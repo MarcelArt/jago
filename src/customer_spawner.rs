@@ -11,7 +11,6 @@ use crate::{customer::Customer, get_node_by_abs_path, selling_phase::SellingPhas
 struct CustomerSpawner {
     base: Base<Node2D>,
     timer: Option<Gd<Timer>>,
-    customer_scene: Gd<PackedScene>,
     cart_area: Option<Gd<Area2D>>,
     game_manager: Option<Gd<SellingPhase>>,
     
@@ -24,25 +23,20 @@ struct CustomerSpawner {
     min_spawn_y: f32,
     #[export]
     max_spawn_y: f32,
+    #[export]
+    customer_scenes: Array<Gd<PackedScene>>,
 }
 
 #[godot_api]
 impl INode2D for CustomerSpawner {
     fn init(base: Base<Node2D>) -> Self {
-        let customer_scene = Some(
-            ResourceLoader::singleton()
-                .load("res://scenes/customer.tscn")
-                .unwrap()
-                .cast::<PackedScene>(),
-        );
-
         Self {
             base,
             timer: None,
             cart_area: None,
             game_manager: None,
             spawn_points: Array::new(),
-            customer_scene: customer_scene.unwrap(),
+            customer_scenes: Array::new(),
             spawn_chance: 30.0, // 30% chance to spawn each interval
             min_spawn_y: 92.0,
             max_spawn_y: 94.0,
@@ -73,8 +67,11 @@ impl CustomerSpawner {
             return;
         }
 
+        let i = rng::randi(0, self.get_customer_scenes().len() as i32 - 1);
+        let customer_scene = self.get_customer_scenes().get(i as usize).unwrap();
+
         // init customer
-        let mut gd_customer = self.customer_scene
+        let mut gd_customer = customer_scene
             .instantiate()
             .unwrap()
             .cast::<Customer>();

@@ -22,7 +22,7 @@ pub struct Customer {
     #[export]
     walk_speed: f32,
     #[export]
-    variant: Option<Gd<CustomerVariant>>,
+    pub variant: Option<Gd<CustomerVariant>>,
     #[export]
     love_bubble: Option<Gd<Sprite2D>>,
     #[export]

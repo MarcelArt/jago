@@ -1,4 +1,4 @@
-[gd_scene load_steps=10 format=3 uid="uid://dsd2q64tvv8sn"]
+[gd_scene load_steps=15 format=3 uid="uid://dsd2q64tvv8sn"]
 
 [ext_resource type="Texture2D" uid="uid://dvnx6t8awyro8" path="res://assets/Cart 1x.png" id="1_e42e2"]
 [ext_resource type="Theme" uid="uid://dq7q5csia0h20" path="res://themes/prep_theme.tres" id="1_ynyjy"]
@@ -8,6 +8,11 @@
 [ext_resource type="Texture2D" uid="uid://b24i8hxn7onea" path="res://assets/emote_heart.png" id="4_e2n45"]
 [ext_resource type="Texture2D" uid="uid://bai6icrojtm5i" path="res://assets/emote_faceHappy.png" id="6_padi1"]
 [ext_resource type="Texture2D" uid="uid://bl42ugdx6pfnw" path="res://assets/emote_faceSad.png" id="7_2efcg"]
+[ext_resource type="PackedScene" uid="uid://dvyuy35ujcy8h" path="res://scenes/office_worker_female.tscn" id="8_8xkuh"]
+[ext_resource type="PackedScene" uid="uid://b2cvh0smsu2o8" path="res://scenes/office_worker_male.tscn" id="9_4gh5k"]
+[ext_resource type="PackedScene" uid="uid://bdtq5up3ipbmr" path="res://scenes/old_person.tscn" id="10_bjsm4"]
+[ext_resource type="PackedScene" uid="uid://uk66gwm2hlgl" path="res://scenes/student_female.tscn" id="11_g0xea"]
+[ext_resource type="PackedScene" uid="uid://5jfi6vn0g0kx" path="res://scenes/student_male.tscn" id="12_gccvo"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_e42e2"]
 size = Vector2(29, 188)
@@ -199,6 +204,7 @@ text = "  End Day  "
 
 [node name="CustomerSpawner" type="CustomerSpawner" parent="." node_paths=PackedStringArray("spawn_points")]
 spawn_points = [NodePath("SpawnPoint1"), NodePath("SpawnPoint2")]
+customer_scenes = Array[PackedScene]([ExtResource("8_8xkuh"), ExtResource("9_4gh5k"), ExtResource("10_bjsm4"), ExtResource("11_g0xea"), ExtResource("12_gccvo")])
 
 [node name="Timer" type="Timer" parent="CustomerSpawner"]
 autostart = true

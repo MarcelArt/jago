@@ -1,0 +1,6 @@
+[gd_resource type="CustomerVariant" format=3 uid="uid://v3rs155038od"]
+
+[resource]
+coffee_pref = 5.0
+milk_pref = 130.0
+sugar_pref = 6.0

@@ -142,7 +142,7 @@ impl SellingPhase {
             let progress = delta as f32 * self.serving_speed;
             order.progress += progress;
             if order.progress >= order.amount as f32 { // order complete remove order queue and change customer state
-                godot_print!("Served customer {}", order.customer.get_name());
+                godot_print!("Served customer {}", order.customer.bind().get_variant().unwrap().get_name());
 
                 feedback = order.customer.bind_mut().complete_order(true);
                 

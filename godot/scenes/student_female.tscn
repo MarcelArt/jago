@@ -1,0 +1,81 @@
+[gd_scene load_steps=12 format=3 uid="uid://uk66gwm2hlgl"]
+
+[ext_resource type="CustomerVariant" uid="uid://v3rs155038od" path="res://resources/student_female.tres" id="1_3sawm"]
+[ext_resource type="Texture2D" uid="uid://doui6o0ima342" path="res://assets/Just Walk Left 1x.png" id="2_ayuvx"]
+[ext_resource type="Texture2D" uid="uid://b24i8hxn7onea" path="res://assets/emote_heart.png" id="3_tjihh"]
+[ext_resource type="Texture2D" uid="uid://bai6icrojtm5i" path="res://assets/emote_faceHappy.png" id="4_8wl46"]
+[ext_resource type="Texture2D" uid="uid://bl42ugdx6pfnw" path="res://assets/emote_faceSad.png" id="5_1dub8"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_xss0h"]
+size = Vector2(12, 26)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_xss0h"]
+atlas = ExtResource("2_ayuvx")
+region = Rect2(0, 0, 16, 32)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_8qg4y"]
+atlas = ExtResource("2_ayuvx")
+region = Rect2(16, 0, 16, 32)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_rjbu2"]
+atlas = ExtResource("2_ayuvx")
+region = Rect2(32, 0, 16, 32)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_qqxhk"]
+atlas = ExtResource("2_ayuvx")
+region = Rect2(48, 0, 16, 32)
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_846g6"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_xss0h")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_8qg4y")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_rjbu2")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_qqxhk")
+}],
+"loop": true,
+"name": &"default",
+"speed": 5.0
+}]
+
+[node name="Customer" type="Customer" node_paths=PackedStringArray("love_bubble", "like_bubble", "dislike_bubble")]
+walk_speed = 50.0
+variant = ExtResource("1_3sawm")
+love_bubble = NodePath("ThoughtBubblePoint/LoveBubble")
+like_bubble = NodePath("ThoughtBubblePoint/LikeBubble")
+dislike_bubble = NodePath("ThoughtBubblePoint/DislikeBubble")
+collision_mask = 2
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+position = Vector2(0, 3)
+shape = SubResource("RectangleShape2D_xss0h")
+one_way_collision_margin = 0.0
+
+[node name="Sprite2D" type="AnimatedSprite2D" parent="."]
+sprite_frames = SubResource("SpriteFrames_846g6")
+frame = 1
+frame_progress = 0.12149496
+
+[node name="VisibleOnScreenNotifier2D" type="VisibleOnScreenNotifier2D" parent="."]
+
+[node name="ThoughtBubblePoint" type="Node2D" parent="."]
+position = Vector2(0, -19)
+
+[node name="LoveBubble" type="Sprite2D" parent="ThoughtBubblePoint"]
+visible = false
+texture = ExtResource("3_tjihh")
+
+[node name="LikeBubble" type="Sprite2D" parent="ThoughtBubblePoint"]
+visible = false
+texture = ExtResource("4_8wl46")
+
+[node name="DislikeBubble" type="Sprite2D" parent="ThoughtBubblePoint"]
+visible = false
+texture = ExtResource("5_1dub8")

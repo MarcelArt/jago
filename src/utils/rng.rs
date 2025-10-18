@@ -20,3 +20,8 @@ pub fn check_chance(percent: f32) -> bool {
     let mut rng = RandomNumberGenerator::new_gd();
     rng.randf() < (percent / 100.0)
 }
+
+pub fn randi(from: i32, to: i32) -> i32 {
+    let mut rng = RandomNumberGenerator::new_gd();
+    rng.randi_range(from, to)
+}
