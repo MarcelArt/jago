@@ -3,4 +3,5 @@ pub enum CustomerFeedback {
     Love,
     Like,
     Dislike,
+    None,
 }

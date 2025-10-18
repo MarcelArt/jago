@@ -1,27 +1,179 @@
-[gd_scene load_steps=3 format=3 uid="uid://dsd2q64tvv8sn"]
+[gd_scene load_steps=10 format=3 uid="uid://dsd2q64tvv8sn"]
 
 [ext_resource type="Texture2D" uid="uid://dvnx6t8awyro8" path="res://assets/Cart 1x.png" id="1_e42e2"]
+[ext_resource type="Theme" uid="uid://dq7q5csia0h20" path="res://themes/prep_theme.tres" id="1_ynyjy"]
+[ext_resource type="Texture2D" uid="uid://4qbi06546x3t" path="res://assets/Money.png" id="2_3ys7y"]
+[ext_resource type="Texture2D" uid="uid://clmsjwdpj5131" path="res://assets/coffee_glass.png" id="3_ndrcq"]
+[ext_resource type="Texture2D" uid="uid://bwn0f05agd8o8" path="res://assets/emote_heart_no_bg.png" id="4_0wkxm"]
+[ext_resource type="Texture2D" uid="uid://b24i8hxn7onea" path="res://assets/emote_heart.png" id="4_e2n45"]
+[ext_resource type="Texture2D" uid="uid://bai6icrojtm5i" path="res://assets/emote_faceHappy.png" id="6_padi1"]
+[ext_resource type="Texture2D" uid="uid://bl42ugdx6pfnw" path="res://assets/emote_faceSad.png" id="7_2efcg"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_e42e2"]
 size = Vector2(29, 188)
 
-[node name="SellingPhase" type="SellingPhase"]
+[node name="SellingPhase" type="SellingPhase" node_paths=PackedStringArray("clock_label", "money_label", "love_label", "like_label", "dislike_label", "day_label", "stock_label")]
+clock_label = NodePath("UI/Control/Panel/MiddleHeader/ClockLabel")
+money_label = NodePath("UI/Control/Panel/RighHeader/MoneyLabel")
+love_label = NodePath("UI/Control/Panel/LeftHeader/HBoxContainer/LoveLabel")
+like_label = NodePath("UI/Control/Panel/LeftHeader/HBoxContainer2/LikeLabel")
+dislike_label = NodePath("UI/Control/Panel/LeftHeader/HBoxContainer3/DislikeLabel")
+day_label = NodePath("UI/Control/Panel/MiddleHeader/DayLabel")
+stock_label = NodePath("UI/Control/Panel/RighHeader/StockLabel")
 
 [node name="UI" type="CanvasLayer" parent="."]
 
-[node name="VBoxContainer" type="VBoxContainer" parent="UI"]
-offset_right = 97.0
-offset_bottom = 54.0
+[node name="Control" type="Control" parent="UI"]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme = ExtResource("1_ynyjy")
 
-[node name="ClockLabel" type="RichTextLabel" parent="UI/VBoxContainer"]
+[node name="Panel" type="Panel" parent="UI/Control"]
+layout_mode = 1
+anchors_preset = 10
+anchor_right = 1.0
+offset_bottom = 23.0
+grow_horizontal = 2
+
+[node name="LeftHeader" type="HBoxContainer" parent="UI/Control/Panel"]
+layout_mode = 1
+anchors_preset = 9
+anchor_bottom = 1.0
+offset_right = 108.0
+offset_bottom = -7.0
+grow_vertical = 2
+theme_override_constants/separation = 15
+
+[node name="HBoxContainer" type="HBoxContainer" parent="UI/Control/Panel/LeftHeader"]
 layout_mode = 2
+
+[node name="TextureRect" type="TextureRect" parent="UI/Control/Panel/LeftHeader/HBoxContainer"]
+clip_contents = true
+layout_mode = 2
+texture = ExtResource("4_e2n45")
+stretch_mode = 3
+
+[node name="LoveLabel" type="RichTextLabel" parent="UI/Control/Panel/LeftHeader/HBoxContainer"]
+layout_mode = 2
+theme_override_colors/default_color = Color(0.9490196, 0.94509804, 0.9490196, 1)
+theme_override_icons/horizontal_rule = ExtResource("4_0wkxm")
+text = "0"
+fit_content = true
+autowrap_mode = 0
+autowrap_trim_flags = 0
+
+[node name="HBoxContainer2" type="HBoxContainer" parent="UI/Control/Panel/LeftHeader"]
+layout_mode = 2
+
+[node name="TextureRect2" type="TextureRect" parent="UI/Control/Panel/LeftHeader/HBoxContainer2"]
+layout_mode = 2
+texture = ExtResource("6_padi1")
+stretch_mode = 3
+
+[node name="LikeLabel" type="RichTextLabel" parent="UI/Control/Panel/LeftHeader/HBoxContainer2"]
+layout_mode = 2
+theme_override_colors/default_color = Color(0.9490196, 0.94509804, 0.9490196, 1)
+theme_override_icons/horizontal_rule = ExtResource("4_0wkxm")
+text = "0"
+fit_content = true
+autowrap_mode = 0
+autowrap_trim_flags = 0
+
+[node name="HBoxContainer3" type="HBoxContainer" parent="UI/Control/Panel/LeftHeader"]
+layout_mode = 2
+
+[node name="TextureRect3" type="TextureRect" parent="UI/Control/Panel/LeftHeader/HBoxContainer3"]
+layout_mode = 2
+texture = ExtResource("7_2efcg")
+stretch_mode = 3
+
+[node name="DislikeLabel" type="RichTextLabel" parent="UI/Control/Panel/LeftHeader/HBoxContainer3"]
+layout_mode = 2
+theme_override_colors/default_color = Color(0.9490196, 0.94509804, 0.9490196, 1)
+theme_override_icons/horizontal_rule = ExtResource("4_0wkxm")
+text = "0"
+fit_content = true
+autowrap_mode = 0
+autowrap_trim_flags = 0
+
+[node name="MiddleHeader" type="VBoxContainer" parent="UI/Control/Panel"]
+layout_mode = 1
+anchors_preset = 13
+anchor_left = 0.5
+anchor_right = 0.5
+anchor_bottom = 1.0
+offset_left = -13.0
+offset_right = 13.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="DayLabel" type="RichTextLabel" parent="UI/Control/Panel/MiddleHeader"]
+clip_contents = false
+layout_mode = 2
+size_flags_horizontal = 3
 size_flags_vertical = 3
+theme_override_colors/default_color = Color(0.9490196, 0.94509804, 0.9490196, 1)
+theme_override_font_sizes/normal_font_size = 6
+text = "Day 1"
+autowrap_trim_flags = 0
+horizontal_alignment = 1
+
+[node name="ClockLabel" type="RichTextLabel" parent="UI/Control/Panel/MiddleHeader"]
+clip_contents = false
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+theme_override_colors/default_color = Color(0.9490196, 0.94509804, 0.9490196, 1)
+theme_override_font_sizes/normal_font_size = 6
 text = "08:00"
+autowrap_trim_flags = 0
+horizontal_alignment = 1
+vertical_alignment = 1
 
-[node name="MoneyLabel" type="RichTextLabel" parent="UI/VBoxContainer"]
+[node name="RighHeader" type="HBoxContainer" parent="UI/Control/Panel"]
+layout_mode = 1
+anchors_preset = 11
+anchor_left = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = -106.0
+grow_horizontal = 0
+grow_vertical = 2
+
+[node name="TextureRect" type="TextureRect" parent="UI/Control/Panel/RighHeader"]
 layout_mode = 2
+texture = ExtResource("2_3ys7y")
+stretch_mode = 3
+
+[node name="MoneyLabel" type="RichTextLabel" parent="UI/Control/Panel/RighHeader"]
+clip_contents = false
+layout_mode = 2
+size_flags_horizontal = 3
 size_flags_vertical = 3
-text = "Rp. "
+theme_override_colors/default_color = Color(0.9490196, 0.94509804, 0.9490196, 1)
+text = "1000"
+autowrap_trim_flags = 0
+vertical_alignment = 1
+
+[node name="TextureRect2" type="TextureRect" parent="UI/Control/Panel/RighHeader"]
+layout_mode = 2
+size_flags_vertical = 0
+texture = ExtResource("3_ndrcq")
+
+[node name="StockLabel" type="RichTextLabel" parent="UI/Control/Panel/RighHeader"]
+clip_contents = false
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+theme_override_colors/default_color = Color(0.9490196, 0.94509804, 0.9490196, 1)
+text = "Stock: 0"
+autowrap_mode = 0
+autowrap_trim_flags = 0
+vertical_alignment = 1
 
 [node name="CustomerSpawner" type="CustomerSpawner" parent="." node_paths=PackedStringArray("spawn_points")]
 spawn_points = [NodePath("SpawnPoint1"), NodePath("SpawnPoint2")]

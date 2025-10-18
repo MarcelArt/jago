@@ -76,11 +76,12 @@ impl GameDataSingleton {
         self.money
     }
 
-    pub fn update_favorability(&mut self, feedback: CustomerFeedback) {
+    pub fn update_favorability(&mut self, feedback: &CustomerFeedback) {
         self.favorability = match feedback {
             CustomerFeedback::Love => clampf(self.favorability as f64 + 0.05, 0.0, 1.0),
             CustomerFeedback::Like => clampf(self.favorability as f64 + 0.02, 0.0, 1.0),
             CustomerFeedback::Dislike => clampf(self.favorability as f64 + 0.04, 0.0, 1.0),
+            _ => self.favorability as f64,
         } as f32
     }
 }

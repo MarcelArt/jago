@@ -123,11 +123,11 @@ impl Customer {
         self.signals().on_make_order().emit(&gd_self, 1);
     }
 
-    pub fn complete_order(&mut self, is_bought: bool) {
+    pub fn complete_order(&mut self, is_bought: bool) -> CustomerFeedback {
         self.customer_state = CustomerState::Leaving;
 
         if !is_bought {
-            return;
+            return CustomerFeedback::None;
         }
 
         let mut game_data = GameDataSingleton::get_instance();
@@ -169,7 +169,8 @@ impl Customer {
             godot_print!("==============================================");
         }
 
-        game_data.bind_mut().update_favorability(feedback);
+        game_data.bind_mut().update_favorability(&feedback);
+        feedback
     }
 
     fn should_buy(&mut self) -> bool {
