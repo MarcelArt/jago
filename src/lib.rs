@@ -10,9 +10,11 @@ mod customer;
 mod prep_phase;
 mod prepare_tab;
 mod shop_tab;
+mod customer_variant;
 mod utils;
 mod macros;
 mod singletons;
+mod enums;
 
 struct GdRust;
 

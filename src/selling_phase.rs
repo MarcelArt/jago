@@ -80,16 +80,16 @@ impl SellingPhase {
     }
 
     pub fn update_orders(&mut self, mut customer: Gd<Customer>, amount: i32) {
-        let mut game_data: Gd<GameDataSingleton> = Engine::singleton().get_singleton(&StringName::from("GameDataSingleton")).unwrap().cast();
-        let mut game_data = game_data.bind_mut();
+        let mut game_data = GameDataSingleton::get_instance();
+        // let mut game_data = game_data.bind_mut();
         
-        if game_data.stock < amount {
+        if game_data.bind().stock < amount {
             customer.bind_mut().complete_order(false);
             return;
         }
-        game_data.stock -= amount;
+        game_data.bind_mut().stock -= amount;
         self.orders.push(CustomerOrder { customer, amount, progress: 0.0 });
-        godot_print!("Stock: {} -> {}", game_data.stock + amount, game_data.stock);
+        godot_print!("Stock: {} -> {}", game_data.bind().stock + amount, game_data.bind().stock);
     }
 
     fn serve_customer(&mut self, delta: f64) {

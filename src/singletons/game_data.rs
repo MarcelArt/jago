@@ -1,4 +1,6 @@
-use godot::{classes::Engine, prelude::*};
+use godot::{classes::Engine, global::clampf, prelude::*};
+
+use crate::enums::customer_feedback::CustomerFeedback;
 
 
 #[derive(Default)]
@@ -17,6 +19,7 @@ pub struct GameDataSingleton {
     pub day: i32,
     pub price: i32,
     pub cup: i32,
+    pub favorability: f32,
     pub inventory: CoffeeComponent,
     pub recipe: CoffeeComponent,
 }
@@ -38,6 +41,7 @@ impl GameDataSingleton {
         };
         self.price = 8;
         self.cup = 50;
+        self.favorability = 0.5;
     }
 
     pub fn is_new_game(&self) -> bool {
@@ -70,6 +74,14 @@ impl GameDataSingleton {
     pub fn add_money(&mut self, amount: i32) -> i32 {
         self.money += amount;
         self.money
+    }
+
+    pub fn update_favorability(&mut self, feedback: CustomerFeedback) {
+        self.favorability = match feedback {
+            CustomerFeedback::Love => clampf(self.favorability as f64 + 0.05, 0.0, 1.0),
+            CustomerFeedback::Like => clampf(self.favorability as f64 + 0.02, 0.0, 1.0),
+            CustomerFeedback::Dislike => clampf(self.favorability as f64 + 0.04, 0.0, 1.0),
+        } as f32
     }
 }
 

@@ -1,6 +1,6 @@
-use godot::{classes::{AnimatedSprite2D, CharacterBody2D, ICharacterBody2D, VisibleOnScreenNotifier2D}, prelude::*};
+use godot::{classes::{AnimatedSprite2D, CharacterBody2D, ICharacterBody2D, VisibleOnScreenNotifier2D}, global::clampf, prelude::*};
 
-use crate::utils::rng;
+use crate::{customer_variant::CustomerVariant, enums::customer_feedback::CustomerFeedback, singletons::game_data::GameDataSingleton, utils::rng};
 
 enum CustomerState {
     Walking,
@@ -23,6 +23,8 @@ pub struct Customer {
     walk_speed: f32,
     #[export]
     desire: f32,
+    #[export]
+    variant: Option<Gd<CustomerVariant>>,
 }
 
 #[godot_api]
@@ -37,6 +39,7 @@ impl ICharacterBody2D for Customer {
             walk_direction: Vector2::LEFT,
             animated_sprite: None,
             desire: 30.0,
+            variant: None,
         }
     }
 
@@ -99,7 +102,7 @@ impl Customer {
             return;
         }
 
-        let is_buying = rng::check_chance(self.desire);
+        let is_buying = self.should_buy();
         godot_print!("Customer deciding to queue: {}", is_buying);
         if is_buying {
             self.customer_state = CustomerState::Waiting;
@@ -115,6 +118,63 @@ impl Customer {
     }
 
     pub fn complete_order(&mut self, _is_bought: bool) {
+        let mut game_data = GameDataSingleton::get_instance();
+        let feedback: CustomerFeedback;
+        {
+            let recipe = &game_data.bind().recipe;
+            let coffee_pref = self.get_variant().unwrap().bind().get_coffee_pref();
+            let milk_pref = self.get_variant().unwrap().bind().get_milk_pref();
+            let sugar_pref = self.get_variant().unwrap().bind().get_sugar_pref();
+    
+            let diff_coffee = (recipe.coffee - coffee_pref).abs();
+            let diff_milk = (recipe.milk - milk_pref).abs();
+            let diff_sugar = (recipe.sugar - sugar_pref).abs();
+    
+            let score = 1.0 - ((diff_coffee/10.0 + diff_milk / 150.0 + diff_sugar / 15.0) / 3.0);
+            let score = clampf(score as f64, 0.0, 1.0);
+            
+            if score > 0.85 {
+                feedback = CustomerFeedback::Love;
+            } else if score > 0.5 {
+                feedback = CustomerFeedback::Like;
+            } else {
+                feedback = CustomerFeedback::Dislike;
+            }
+
+            // TODO: comment when not needed
+            godot_print!("===================Verdict?===================");
+            godot_print!("Coffee/Pref: {}/{}", recipe.coffee, coffee_pref);
+            godot_print!("Milk/Pref: {}/{}", recipe.milk, milk_pref);
+            godot_print!("Sugar/Pref: {}/{}", recipe.sugar, sugar_pref);
+            godot_print!("Score: {:#?}", score);
+            godot_print!("Feedback: {:#?}", feedback);
+            godot_print!("==============================================");
+        }
+
+        game_data.bind_mut().update_favorability(feedback);
+
         self.customer_state = CustomerState::Leaving;
+    }
+
+    fn should_buy(&mut self) -> bool {
+        let game_data = GameDataSingleton::get_instance();
+        
+        let favorability_factor = game_data.bind().favorability;
+        
+        let price = game_data.bind().price;
+        let price_factor = clampf(1.0 - ((price as f64 - 8.0) / 8.0), 0.2, 1.5) as f32;
+
+        let base_chance = favorability_factor * price_factor;
+        let roll = rng::randf(0.0, 1.0);
+
+        // TODO: comment when not needed
+        godot_print!("=================Should buy?==================");
+        godot_print!("Favorability factor: {}", favorability_factor);
+        godot_print!("Price factor ({}): {}", price, price_factor);
+        godot_print!("Buy chance: {}", base_chance);
+        godot_print!("RNG roll: {}", roll);
+        godot_print!("==============================================");
+
+        roll < base_chance
     }
 }
