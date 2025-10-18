@@ -17,7 +17,8 @@
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_e42e2"]
 size = Vector2(29, 188)
 
-[node name="SellingPhase" type="SellingPhase" node_paths=PackedStringArray("clock_label", "money_label", "love_label", "like_label", "dislike_label", "day_label", "stock_label", "skip_button")]
+[node name="SellingPhase" type="SellingPhase" node_paths=PackedStringArray("clock_label", "money_label", "love_label", "like_label", "dislike_label", "day_label", "stock_label", "skip_button", "fast_forward_button")]
+time_multiplier = 10.0
 clock_label = NodePath("UI/Control/Panel/MiddleHeader/ClockLabel")
 money_label = NodePath("UI/Control/Panel/RighHeader/MoneyLabel")
 love_label = NodePath("UI/Control/Panel/LeftHeader/HBoxContainer/LoveLabel")
@@ -26,6 +27,7 @@ dislike_label = NodePath("UI/Control/Panel/LeftHeader/HBoxContainer3/DislikeLabe
 day_label = NodePath("UI/Control/Panel/MiddleHeader/DayLabel")
 stock_label = NodePath("UI/Control/Panel/RighHeader/StockLabel")
 skip_button = NodePath("UI/Control/HBoxContainer/SkipButton")
+fast_forward_button = NodePath("UI/Control/HBoxContainer/FastForwardButton")
 
 [node name="UI" type="CanvasLayer" parent="."]
 

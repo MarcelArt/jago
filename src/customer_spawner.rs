@@ -53,6 +53,11 @@ impl INode2D for CustomerSpawner {
             .signals()
             .timeout()
             .connect_other(&*self, Self::_on_timer_timeout);
+
+        let game_manager = self.game_manager.as_ref().unwrap();
+        game_manager.signals()
+            .on_toggle_fast_forward()
+            .connect_other(&*self, Self::update_timer_speed);
     }
 
     fn process(&mut self, _delta: f64) {}
@@ -104,10 +109,20 @@ impl CustomerSpawner {
             .signals()
             .on_make_order()
             .connect_other(&*game_manager, SellingPhase::update_orders);
+
+        game_manager.signals()
+            .on_toggle_fast_forward()
+            .connect_other(&*customer, Customer::on_toggle_fast_forward);
     }
 
     #[func]
     fn _on_timer_timeout(&mut self) {
         self.spawn_customer();
+    }
+
+    fn update_timer_speed(&mut self, ff_speed: f64) {
+        let timer = self.timer.as_mut().unwrap();
+        let time_sec = 1.0 / ff_speed;
+        timer.set_wait_time(time_sec);
     }
 }

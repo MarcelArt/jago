@@ -15,7 +15,7 @@ pub struct SellingPhase {
     current_time: f64,
     end_time: f64,  // End time in minutes (e.g., 20:00 = 1200 minutes)
     is_day_over: bool,
-    time_speed: f64, // Time speed multiplier
+    fast_forward_speed: f64, // Time speed multiplier
     serving_speed: f32,
     orders: Vec<CustomerOrder>,
     love_count: i32,
@@ -41,6 +41,8 @@ pub struct SellingPhase {
     stock_label: Option<Gd<RichTextLabel>>,
     #[export]
     skip_button: Option<Gd<Button>>,
+    #[export]
+    fast_forward_button: Option<Gd<Button>>,
 }
 
 #[godot_api]
@@ -56,8 +58,9 @@ impl INode2D for SellingPhase {
             day_label: None,
             stock_label: None,
             skip_button: None,
+            fast_forward_button: None,
             current_time: (8 * 60) as f64, // Start at 8:00 AM
-            time_speed: 1 as f64, // Normal speed
+            fast_forward_speed: 1 as f64, // Normal speed
             end_time: (17 * 60) as f64, // End at 8:00 PM
             is_day_over: false,
             time_multiplier: 5 as f64, // Default time multiplier
@@ -83,6 +86,11 @@ impl INode2D for SellingPhase {
             .signals()
             .pressed()
             .connect_other(&*self, Self::end_day);
+
+        self.get_fast_forward_button().unwrap()
+            .signals()
+            .pressed()
+            .connect_other(&*self, Self::toggle_fast_forward);
     }
 
     fn process(&mut self, _delta: f64) {
@@ -91,13 +99,18 @@ impl INode2D for SellingPhase {
     }  
 }     
 
+#[godot_api]
 impl SellingPhase {
+    #[signal]
+    pub fn on_toggle_fast_forward(ff_speed: f64);
+    
     fn progress_time(&mut self, delta: f64) {
         if self.is_day_over {
+            self.end_day();
             return;
         }
-        let time_speed = self.time_speed;
-        self.current_time += delta * time_speed * self.time_multiplier;
+        let fast_forward_speed = self.fast_forward_speed;
+        self.current_time += delta * fast_forward_speed * self.time_multiplier;
         if self.current_time >= self.end_time {
             self.current_time = self.end_time;
             self.is_day_over = true;
@@ -139,7 +152,7 @@ impl SellingPhase {
             }
             let order = order.unwrap();
             
-            let progress = delta as f32 * self.serving_speed;
+            let progress = delta as f32 * self.serving_speed * self.fast_forward_speed as f32;
             order.progress += progress;
             if order.progress >= order.amount as f32 { // order complete remove order queue and change customer state
                 godot_print!("Served customer {}", order.customer.bind().get_variant().unwrap().get_name());
@@ -193,5 +206,18 @@ impl SellingPhase {
 
         let mut tree = self.base().get_tree().unwrap();
         tree.change_scene_to_file("res://scenes/prep_phase.tscn");
+    }
+
+    fn toggle_fast_forward(&mut self) {
+        let (fast_forward_speed, fast_forward_display) = match self.fast_forward_speed {
+            1.0 => (3.0, "  2x  "),
+            3.0 => (6.0, "  3x  "),
+            _ => (1.0, "  1x  "),
+        };
+        self.fast_forward_speed = fast_forward_speed;
+        self.get_fast_forward_button().unwrap().set_text(fast_forward_display);
+        self.signals()
+            .on_toggle_fast_forward()
+            .emit(fast_forward_speed);
     }
 }

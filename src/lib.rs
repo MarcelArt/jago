@@ -3,7 +3,6 @@ use godot::{classes::Engine, prelude::*};
 use crate::singletons::game_data::GameDataSingleton;
 
 // Import modules here
-// mod rust_example;
 mod selling_phase;
 mod customer_spawner;
 mod customer;

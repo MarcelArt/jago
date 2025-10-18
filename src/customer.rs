@@ -194,4 +194,9 @@ impl Customer {
 
         roll < base_chance
     }
+
+    pub fn on_toggle_fast_forward(&mut self, ff_speed: f64) {
+        self.speed_multiplier = 100.0 * ff_speed as f32;
+        godot_print!("Speed: {}", self.speed_multiplier);
+    }
 }
