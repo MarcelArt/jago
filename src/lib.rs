@@ -14,6 +14,7 @@ mod utils;
 mod macros;
 mod singletons;
 mod enums;
+mod error_alert;
 
 struct GdRust;
 

@@ -10,6 +10,15 @@ pub struct CoffeeComponent {
     pub sugar: f32,
 }
 
+impl CoffeeComponent {
+    pub fn is_empty(&self) -> bool {
+        match (self.coffee, self.milk, self.sugar) {
+            (0.0, 0.0, 0.0) => true,
+            _ => false,
+        }
+    }
+}
+
 #[derive(GodotClass)]
 #[class(init, base=Object)]
 pub struct GameDataSingleton {

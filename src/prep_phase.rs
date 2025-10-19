@@ -1,6 +1,6 @@
 use godot::{classes::{Button, Control, IControl, LineEdit, RichTextLabel}, prelude::*};
 
-use crate::{shop_tab::ShopTab, singletons::game_data::GameDataSingleton};
+use crate::{error_alert::ErrorAlert, shop_tab::ShopTab, singletons::game_data::GameDataSingleton};
 
 
 #[derive(GodotClass)]
@@ -21,6 +21,8 @@ pub struct PrepPhase {
     price_input: Option<Gd<LineEdit>>,
     #[export]
     shop_tab: Option<Gd<ShopTab>>,
+    #[export]
+    error_alert: Option<Gd<ErrorAlert>>,
 }
 
 #[godot_api]
@@ -34,6 +36,7 @@ impl IControl for PrepPhase {
             day_count_label: None,
             price_input: None,
             shop_tab: None,
+            error_alert: None,
         }
     }
 
@@ -74,7 +77,20 @@ impl PrepPhase {
 
     fn _on_start_day_button_pressed(&mut self) {
         let mut game_data= GameDataSingleton::get_instance();
+        godot_print!("stock={}", game_data.bind().stock);
+        if game_data.bind().stock <= 0 {
+            let mut error_alert = self.get_error_alert().unwrap();
+            error_alert.bind_mut().show_alert(GString::from("Stock are empty please make coffee first"));
+            return;
+        }
+        
         game_data.bind_mut().price = self.get_price_input().unwrap().get_text().to_int() as i32;
+        if game_data.bind().price <= 0 {
+            let mut error_alert = self.get_error_alert().unwrap();
+            error_alert.bind_mut().show_alert(GString::from("Put a price on your coffee"));
+            return;
+        }
+        
         game_data.bind_mut().start_day();
 
         let mut tree = self.base().get_tree().unwrap();

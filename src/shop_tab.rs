@@ -1,11 +1,12 @@
 use godot::{classes::{Button, Control, IControl, LineEdit, RichTextLabel}, prelude::*};
 
-use crate::singletons::game_data::GameDataSingleton;
+use crate::{error_alert::ErrorAlert, get_node_by_abs_path, singletons::game_data::GameDataSingleton};
 
 #[derive(GodotClass)]
 #[class(base=Control)]
 pub struct ShopTab {
     base: Base<Control>,
+    error_alert: Option<Gd<ErrorAlert>>,
 
     // Change or add your own properties here
     #[export]
@@ -33,6 +34,7 @@ impl IControl for ShopTab {
             cup_input: None,
             money_label: None,
             buy_button: None,
+            error_alert: None,
         }
     }
 
@@ -61,6 +63,8 @@ impl IControl for ShopTab {
         buy_button.signals()
             .pressed()
             .connect_other(&*self, Self::on_buy);
+
+        self.error_alert = Some(get_node_by_abs_path!(self.base(), "PrepPhase/ErrorAlert"));
     }
 
     fn process(&mut self, _delta: f64) {
@@ -93,7 +97,8 @@ impl ShopTab {
         let mut money_label = self.get_money_label().unwrap();
         let total = money_label.get_text().to_int() as i32;
         if game_data.bind().money < total {
-            godot_print!("Not enough money");
+            let error_alert = self.error_alert.as_mut().unwrap();
+            error_alert.bind_mut().show_alert(GString::from("Not enough money"));
             return;
         }
 

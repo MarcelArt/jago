@@ -1,4 +1,4 @@
-[gd_scene load_steps=7 format=3 uid="uid://bbs0nub3ktsgb"]
+[gd_scene load_steps=8 format=3 uid="uid://bbs0nub3ktsgb"]
 
 [ext_resource type="Theme" uid="uid://dq7q5csia0h20" path="res://themes/prep_theme.tres" id="1_bo5ya"]
 [ext_resource type="Texture2D" uid="uid://clmsjwdpj5131" path="res://assets/coffee_glass.png" id="2_142ma"]
@@ -7,13 +7,26 @@
 [ext_resource type="Texture2D" uid="uid://b2h06k0l8s635" path="res://assets/milk_pack.png" id="3_3h0dq"]
 [ext_resource type="Texture2D" uid="uid://hma6pksipvir" path="res://assets/sugar.png" id="4_y0lkf"]
 
-[node name="PrepPhase" type="PrepPhase" node_paths=PackedStringArray("start_day_button", "money_label", "stock_label", "day_count_label", "price_input", "shop_tab")]
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_y0lkf"]
+bg_color = Color(0.9411765, 0.9411765, 0.94509804, 1)
+border_width_left = 2
+border_width_top = 2
+border_width_right = 2
+border_width_bottom = 2
+border_color = Color(0.5294118, 0.2901961, 0.23137255, 1)
+corner_radius_top_left = 10
+corner_radius_top_right = 10
+corner_radius_bottom_right = 10
+corner_radius_bottom_left = 10
+
+[node name="PrepPhase" type="PrepPhase" node_paths=PackedStringArray("start_day_button", "money_label", "stock_label", "day_count_label", "price_input", "shop_tab", "error_alert")]
 start_day_button = NodePath("TabContainer/Prepare/VBoxContainer/StartDayButton")
 money_label = NodePath("Panel/StockHBox/MoneyLabel")
 stock_label = NodePath("Panel/StockHBox/StockLabel")
 day_count_label = NodePath("Panel/DayCountLabel")
 price_input = NodePath("TabContainer/Prepare/VBoxContainer/HBoxContainer/PriceInput")
 shop_tab = NodePath("TabContainer/Shop")
+error_alert = NodePath("ErrorAlert")
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
@@ -549,3 +562,57 @@ layout_mode = 2
 size_flags_horizontal = 10
 size_flags_vertical = 4
 text = "  Buy  "
+
+[node name="ErrorAlert" type="ErrorAlert" parent="." node_paths=PackedStringArray("message_label", "ok_button")]
+message_label = NodePath("Panel/VBoxContainer/Label")
+ok_button = NodePath("Panel/VBoxContainer/Button")
+visible = false
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -20.0
+offset_top = -20.0
+offset_right = 20.0
+offset_bottom = 20.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="Panel" type="Panel" parent="ErrorAlert"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = -43.0
+offset_top = -2.0
+offset_right = 43.0
+offset_bottom = 2.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_styles/panel = SubResource("StyleBoxFlat_y0lkf")
+
+[node name="VBoxContainer" type="VBoxContainer" parent="ErrorAlert/Panel"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = 9.0
+offset_top = 5.0
+offset_right = -9.0
+offset_bottom = -5.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="Label" type="RichTextLabel" parent="ErrorAlert/Panel/VBoxContainer"]
+layout_mode = 2
+size_flags_vertical = 3
+theme_override_font_sizes/normal_font_size = 6
+text = "Stock are empty please make coffee first"
+fit_content = true
+
+[node name="Button" type="Button" parent="ErrorAlert/Panel/VBoxContainer"]
+layout_mode = 2
+theme_override_font_sizes/font_size = 6
+text = "Ok"

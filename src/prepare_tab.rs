@@ -1,11 +1,12 @@
 use godot::{classes::{Button, Control, IControl, LineEdit, RichTextLabel}, prelude::*};
 
-use crate::{prep_phase::PrepPhase, shop_tab::ShopTab, singletons::game_data::GameDataSingleton};
+use crate::{error_alert::ErrorAlert, get_node_by_abs_path, prep_phase::PrepPhase, shop_tab::ShopTab, singletons::game_data::GameDataSingleton};
 
 #[derive(GodotClass)]
 #[class(base=Control)]
 struct PrepareTab {
     base: Base<Control>,
+    error_alert: Option<Gd<ErrorAlert>>,
 
     // Change or add your own properties here
     #[export]
@@ -48,6 +49,7 @@ impl IControl for PrepareTab {
             save_recipe_button: None,
             prep_phase: None,
             shop_tab: None,
+            error_alert: None,
         }
     }
 
@@ -80,6 +82,8 @@ impl IControl for PrepareTab {
             .on_buy_success()
             .connect_other(&*self, Self::update_inventory);
         
+        self.error_alert = Some(get_node_by_abs_path!(self.base(), "PrepPhase/ErrorAlert"));
+        
     }
 
     fn process(&mut self, _delta: f64) {
@@ -95,6 +99,13 @@ impl PrepareTab {
         let coffee = self.get_coffee_input().unwrap().get_text().to_float() as f32;
         let milk = self.get_milk_input().unwrap().get_text().to_float() as f32;
         let sugar = self.get_sugar_input().unwrap().get_text().to_float() as f32;
+
+        if coffee <= 0.0 && milk <= 0.0 && sugar <= 0.0 {
+            let error_alert = self.error_alert.as_mut().unwrap();
+            error_alert.bind_mut().show_alert(GString::from("Invalid recipe"));
+            return;
+        }
+
         game_data.bind_mut().save_recipe(coffee, milk, sugar);
 
         let stock = game_data.bind().stock;
