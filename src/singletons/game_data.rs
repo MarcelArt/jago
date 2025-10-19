@@ -11,7 +11,7 @@ pub struct CoffeeComponent {
 }
 
 impl CoffeeComponent {
-    pub fn is_empty(&self) -> bool {
+    pub fn _is_empty(&self) -> bool {
         match (self.coffee, self.milk, self.sugar) {
             (0.0, 0.0, 0.0) => true,
             _ => false,
