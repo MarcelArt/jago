@@ -204,6 +204,8 @@ impl SellingPhase {
         game_data.bind_mut().day += 1;
         game_data.bind_mut().stock = 0;
 
+        game_data.bind_mut().save_game();
+
         let mut tree = self.base().get_tree().unwrap();
         tree.change_scene_to_file("res://scenes/prep_phase.tscn");
     }

@@ -1,9 +1,10 @@
-use godot::{classes::Engine, global::clampf, prelude::*};
+use godot::{classes::{file_access::ModeFlags, Engine, FileAccess, Json}, global::clampf, prelude::*};
+use serde::{Deserialize, Serialize};
 
 use crate::enums::customer_feedback::CustomerFeedback;
 
 
-#[derive(Default)]
+#[derive(Default, Serialize, Deserialize)]
 pub struct CoffeeComponent {
     pub coffee: f32,
     pub milk: f32,
@@ -17,6 +18,18 @@ impl CoffeeComponent {
             _ => false,
         }
     }
+}
+
+#[derive(Default, Serialize, Deserialize)]
+struct GameDataSave {
+    pub stock: i32,
+    pub money: i32,
+    pub day: i32,
+    pub price: i32,
+    pub cup: i32,
+    pub favorability: f32,
+    pub inventory: CoffeeComponent,
+    pub recipe: CoffeeComponent,
 }
 
 #[derive(GodotClass)]
@@ -92,6 +105,68 @@ impl GameDataSingleton {
             CustomerFeedback::Dislike => clampf(self.favorability as f64 + 0.04, 0.0, 1.0),
             _ => self.favorability as f64,
         } as f32
+    }
+
+    pub fn save_game(&self) {
+        let file = FileAccess::open("user://savegame.json", ModeFlags::WRITE);
+        if let Some(mut file) = file {
+            let save_data = self.to_save();
+            let save_json = serde_json::to_string(&save_data);
+            if let Ok(json_string) = save_json {
+                file.store_string(&json_string);
+            }
+        };
+    }
+
+    pub fn load_game(&mut self) {
+        let file = FileAccess::open("user://savegame.json", ModeFlags::READ);
+        if let Some(file) = file {
+            let json_string = file.get_as_text();
+            let save_data: Result<GameDataSave, _> = serde_json::from_str(json_string.to_string().as_str());
+            if let Ok(save) = save_data {
+                self.from_save(save);
+            }
+        };
+    }
+
+    fn to_save(&self) -> GameDataSave {
+        GameDataSave {
+            stock: self.stock,
+            money: self.money,
+            day: self.day,
+            price: self.price,
+            cup: self.cup,
+            favorability: self.favorability,
+            inventory: CoffeeComponent {
+                coffee: self.inventory.coffee,
+                milk: self.inventory.milk,
+                sugar: self.inventory.sugar,
+            },
+            recipe: CoffeeComponent {
+                coffee: self.recipe.coffee,
+                milk: self.recipe.milk,
+                sugar: self.recipe.sugar,
+            },
+        }
+    }
+
+    fn from_save(&mut self, save: GameDataSave) {
+        self.stock = save.stock;
+        self.money = save.money;
+        self.day = save.day;
+        self.price = save.price;
+        self.cup = save.cup;
+        self.favorability = save.favorability;
+        self.inventory = CoffeeComponent {
+            coffee: save.inventory.coffee,
+            milk: save.inventory.milk,
+            sugar: save.inventory.sugar,
+        };
+        self.recipe = CoffeeComponent {
+            coffee: save.recipe.coffee,
+            milk: save.recipe.milk,
+            sugar: save.recipe.sugar,
+        };
     }
 }
 

@@ -1,5 +1,7 @@
 use godot::{classes::{Button, Control, IControl, Panel}, prelude::*};
 
+use crate::singletons::game_data::GameDataSingleton;
+
 #[derive(GodotClass)]
 #[class(base=Control)]
 struct MainMenu {
@@ -35,8 +37,15 @@ impl IControl for MainMenu {
     }
 
     fn ready(&mut self) {
+        let mut game_data = GameDataSingleton::get_instance();
+        game_data.bind_mut().load_game();
+        
         self.get_continue_button().unwrap().set_visible(false);
         self.get_credit_panel().unwrap().set_visible(false);
+        
+        if !game_data.bind().is_new_game() {
+            self.get_continue_button().unwrap().set_visible(true);
+        }
 
         let new_game_button = self.get_new_game_button().unwrap();
         new_game_button.signals()
@@ -57,6 +66,11 @@ impl IControl for MainMenu {
         close_credit_button.signals()
             .pressed()
             .connect_other(&*self, Self::close_credit);
+
+        let continue_button = self.get_continue_button().unwrap();
+        continue_button.signals()
+            .pressed()
+            .connect_other(&*self, Self::load_game);
     }
 
     fn process(&mut self, _delta: f64) {
@@ -79,6 +93,14 @@ impl MainMenu {
 
     fn close_credit(&mut self) {
         self.get_credit_panel().unwrap().set_visible(false);
+    }
+
+    fn load_game(&mut self) {
+        let mut game_data = GameDataSingleton::get_instance();
+        game_data.bind_mut().load_game();
+
+        let mut tree = self.base().get_tree().unwrap();
+        tree.change_scene_to_file("res://scenes/prep_phase.tscn");
     }
 }
         
