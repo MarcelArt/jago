@@ -15,6 +15,7 @@ mod macros;
 mod singletons;
 mod enums;
 mod error_alert;
+mod main_menu;
 
 struct GdRust;
 
