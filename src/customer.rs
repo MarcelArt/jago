@@ -12,7 +12,7 @@ enum CustomerState {
 #[class(base=CharacterBody2D)]
 pub struct Customer {
     base: Base<CharacterBody2D>,
-    speed_multiplier: f32,
+    pub speed_multiplier: f32,
     visibility_notifier: Option<Gd<VisibleOnScreenNotifier2D>>,
     customer_state: CustomerState,
     walk_direction: Vector2,

@@ -1,4 +1,4 @@
-use godot::{classes::{file_access::ModeFlags, Engine, FileAccess, Json}, global::clampf, prelude::*};
+use godot::{classes::{file_access::ModeFlags, Engine, FileAccess}, global::clampf, prelude::*};
 use serde::{Deserialize, Serialize};
 
 use crate::enums::customer_feedback::CustomerFeedback;
@@ -127,6 +127,20 @@ impl GameDataSingleton {
                 self.from_save(save);
             }
         };
+    }
+
+    pub fn is_save_exist(&self) -> bool {
+        let file = FileAccess::open("user://savegame.json", ModeFlags::READ);
+        if let Some(file) = file {
+            let json_string = file.get_as_text();
+            let save_data: Result<GameDataSave, _> = serde_json::from_str(json_string.to_string().as_str());
+            match save_data {
+                Ok(_) => return true,
+                Err(_) => return false,
+            }
+        };
+
+        false
     }
 
     fn to_save(&self) -> GameDataSave {

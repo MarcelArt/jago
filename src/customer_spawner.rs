@@ -13,6 +13,7 @@ struct CustomerSpawner {
     timer: Option<Gd<Timer>>,
     cart_area: Option<Gd<Area2D>>,
     game_manager: Option<Gd<SellingPhase>>,
+    starting_speed_multiplier: f32,
     
     // Change or add your own properties here
     #[export]
@@ -40,6 +41,7 @@ impl INode2D for CustomerSpawner {
             spawn_chance: 30.0, // 30% chance to spawn each interval
             min_spawn_y: 92.0,
             max_spawn_y: 94.0,
+            starting_speed_multiplier: 100.0,
         }
     }
 
@@ -57,7 +59,7 @@ impl INode2D for CustomerSpawner {
         let game_manager = self.game_manager.as_ref().unwrap();
         game_manager.signals()
             .on_toggle_fast_forward()
-            .connect_other(&*self, Self::update_timer_speed);
+            .connect_other(&*self, Self::on_toggle_fast_forward);
     }
 
     fn process(&mut self, _delta: f64) {}
@@ -80,6 +82,8 @@ impl CustomerSpawner {
             .instantiate()
             .unwrap()
             .cast::<Customer>();
+
+        gd_customer.bind_mut().speed_multiplier = self.starting_speed_multiplier;
         
         // set spawn position
         let i = rng::coin_toss() as usize;
@@ -120,9 +124,11 @@ impl CustomerSpawner {
         self.spawn_customer();
     }
 
-    fn update_timer_speed(&mut self, ff_speed: f64) {
+    fn on_toggle_fast_forward(&mut self, ff_speed: f64) {
         let timer = self.timer.as_mut().unwrap();
         let time_sec = 1.0 / ff_speed;
         timer.set_wait_time(time_sec);
+
+        self.starting_speed_multiplier = (ff_speed as f32) * 100.0;
     }
 }

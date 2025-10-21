@@ -37,13 +37,12 @@ impl IControl for MainMenu {
     }
 
     fn ready(&mut self) {
-        let mut game_data = GameDataSingleton::get_instance();
-        game_data.bind_mut().load_game();
+        let game_data = GameDataSingleton::get_instance();
         
         self.get_continue_button().unwrap().set_visible(false);
         self.get_credit_panel().unwrap().set_visible(false);
         
-        if !game_data.bind().is_new_game() {
+        if game_data.bind().is_save_exist() {
             self.get_continue_button().unwrap().set_visible(true);
         }
 
