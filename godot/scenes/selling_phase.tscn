@@ -1,6 +1,5 @@
-[gd_scene load_steps=15 format=3 uid="uid://dsd2q64tvv8sn"]
+[gd_scene load_steps=24 format=3 uid="uid://dsd2q64tvv8sn"]
 
-[ext_resource type="Texture2D" uid="uid://dvnx6t8awyro8" path="res://assets/Cart 1x.png" id="1_e42e2"]
 [ext_resource type="Theme" uid="uid://dq7q5csia0h20" path="res://themes/prep_theme.tres" id="1_ynyjy"]
 [ext_resource type="Texture2D" uid="uid://4qbi06546x3t" path="res://assets/Money.png" id="2_3ys7y"]
 [ext_resource type="Texture2D" uid="uid://clmsjwdpj5131" path="res://assets/coffee_glass.png" id="3_ndrcq"]
@@ -13,6 +12,59 @@
 [ext_resource type="PackedScene" uid="uid://bdtq5up3ipbmr" path="res://scenes/old_person.tscn" id="10_bjsm4"]
 [ext_resource type="PackedScene" uid="uid://uk66gwm2hlgl" path="res://scenes/student_female.tscn" id="11_g0xea"]
 [ext_resource type="PackedScene" uid="uid://5jfi6vn0g0kx" path="res://scenes/student_male.tscn" id="12_gccvo"]
+[ext_resource type="Texture2D" uid="uid://cb810jmwqbrf4" path="res://assets/cart.png" id="13_4gh5k"]
+[ext_resource type="Texture2D" uid="uid://cev3n0m1v5tn8" path="res://assets/selling_phase.png" id="14_4gh5k"]
+[ext_resource type="Texture2D" uid="uid://jo6fc3gn83pw" path="res://assets/player_idle.png" id="14_bjsm4"]
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_g0xea"]
+atlas = ExtResource("14_bjsm4")
+region = Rect2(0, 0, 48, 48)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_gccvo"]
+atlas = ExtResource("14_bjsm4")
+region = Rect2(48, 0, 48, 48)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_edkxm"]
+atlas = ExtResource("14_bjsm4")
+region = Rect2(96, 0, 48, 48)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_djvvx"]
+atlas = ExtResource("14_bjsm4")
+region = Rect2(144, 0, 48, 48)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_qj53e"]
+atlas = ExtResource("14_bjsm4")
+region = Rect2(192, 0, 48, 48)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_2yegd"]
+atlas = ExtResource("14_bjsm4")
+region = Rect2(240, 0, 48, 48)
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_bkbqj"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_g0xea")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_gccvo")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_edkxm")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_djvvx")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_qj53e")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_2yegd")
+}],
+"loop": true,
+"name": &"default",
+"speed": 5.0
+}]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_e42e2"]
 size = Vector2(29, 188)
@@ -218,10 +270,18 @@ position = Vector2(320, 97)
 position = Vector2(0, 99)
 
 [node name="Cart" type="Sprite2D" parent="."]
-position = Vector2(159, 99)
-texture = ExtResource("1_e42e2")
+position = Vector2(159, 148)
+texture = ExtResource("13_4gh5k")
+
+[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="Cart"]
+z_index = -1
+position = Vector2(-6, -10)
+scale = Vector2(0.7, 0.7)
+sprite_frames = SubResource("SpriteFrames_bkbqj")
+frame_progress = 0.43896616
 
 [node name="Area2D" type="Area2D" parent="Cart"]
+scale = Vector2(1.4, 0.97711664)
 collision_layer = 2
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Cart/Area2D"]
@@ -229,3 +289,8 @@ position = Vector2(-0.5, -8)
 shape = SubResource("RectangleShape2D_e42e2")
 
 [node name="Timer" type="Timer" parent="."]
+
+[node name="Sprite2D" type="Sprite2D" parent="."]
+z_index = -999
+position = Vector2(160, 90)
+texture = ExtResource("14_4gh5k")

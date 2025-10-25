@@ -1,47 +1,95 @@
-[gd_scene load_steps=12 format=3 uid="uid://5jfi6vn0g0kx"]
+[gd_scene load_steps=19 format=3 uid="uid://5jfi6vn0g0kx"]
 
 [ext_resource type="CustomerVariant" uid="uid://rlbokb8hn6bd" path="res://resources/student_male.tres" id="1_i21qt"]
-[ext_resource type="Texture2D" uid="uid://doui6o0ima342" path="res://assets/Just Walk Left 1x.png" id="2_6gbxb"]
+[ext_resource type="Texture2D" uid="uid://b6a2278yld8gg" path="res://assets/student_m_walk.png" id="2_i21qt"]
+[ext_resource type="Texture2D" uid="uid://fdmn0twlkaje" path="res://assets/student_m_idle.png" id="3_6gbxb"]
 [ext_resource type="Texture2D" uid="uid://b24i8hxn7onea" path="res://assets/emote_heart.png" id="3_pcvve"]
 [ext_resource type="Texture2D" uid="uid://bai6icrojtm5i" path="res://assets/emote_faceHappy.png" id="4_sotxi"]
 [ext_resource type="Texture2D" uid="uid://bl42ugdx6pfnw" path="res://assets/emote_faceSad.png" id="5_6lkm5"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_xss0h"]
-size = Vector2(12, 26)
+size = Vector2(12, 19)
 
-[sub_resource type="AtlasTexture" id="AtlasTexture_xss0h"]
-atlas = ExtResource("2_6gbxb")
-region = Rect2(0, 0, 16, 32)
+[sub_resource type="AtlasTexture" id="AtlasTexture_6gbxb"]
+atlas = ExtResource("2_i21qt")
+region = Rect2(0, 0, 48, 48)
 
-[sub_resource type="AtlasTexture" id="AtlasTexture_8qg4y"]
-atlas = ExtResource("2_6gbxb")
-region = Rect2(16, 0, 16, 32)
+[sub_resource type="AtlasTexture" id="AtlasTexture_pcvve"]
+atlas = ExtResource("2_i21qt")
+region = Rect2(48, 0, 48, 48)
 
-[sub_resource type="AtlasTexture" id="AtlasTexture_rjbu2"]
-atlas = ExtResource("2_6gbxb")
-region = Rect2(32, 0, 16, 32)
+[sub_resource type="AtlasTexture" id="AtlasTexture_sotxi"]
+atlas = ExtResource("2_i21qt")
+region = Rect2(96, 0, 48, 48)
 
-[sub_resource type="AtlasTexture" id="AtlasTexture_qqxhk"]
-atlas = ExtResource("2_6gbxb")
-region = Rect2(48, 0, 16, 32)
+[sub_resource type="AtlasTexture" id="AtlasTexture_6lkm5"]
+atlas = ExtResource("2_i21qt")
+region = Rect2(144, 0, 48, 48)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_tgee1"]
+atlas = ExtResource("2_i21qt")
+region = Rect2(192, 0, 48, 48)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_a53sq"]
+atlas = ExtResource("2_i21qt")
+region = Rect2(240, 0, 48, 48)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_2ondy"]
+atlas = ExtResource("3_6gbxb")
+region = Rect2(0, 0, 48, 48)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_xg54q"]
+atlas = ExtResource("3_6gbxb")
+region = Rect2(48, 0, 48, 48)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_ph3oh"]
+atlas = ExtResource("3_6gbxb")
+region = Rect2(96, 0, 48, 48)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_wqk0r"]
+atlas = ExtResource("3_6gbxb")
+region = Rect2(144, 0, 48, 48)
 
 [sub_resource type="SpriteFrames" id="SpriteFrames_846g6"]
 animations = [{
 "frames": [{
 "duration": 1.0,
-"texture": SubResource("AtlasTexture_xss0h")
+"texture": SubResource("AtlasTexture_6gbxb")
 }, {
 "duration": 1.0,
-"texture": SubResource("AtlasTexture_8qg4y")
+"texture": SubResource("AtlasTexture_pcvve")
 }, {
 "duration": 1.0,
-"texture": SubResource("AtlasTexture_rjbu2")
+"texture": SubResource("AtlasTexture_sotxi")
 }, {
 "duration": 1.0,
-"texture": SubResource("AtlasTexture_qqxhk")
+"texture": SubResource("AtlasTexture_6lkm5")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_tgee1")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_a53sq")
 }],
 "loop": true,
 "name": &"default",
+"speed": 5.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_2ondy")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_xg54q")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_ph3oh")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_wqk0r")
+}],
+"loop": true,
+"name": &"idle",
 "speed": 5.0
 }]
 
@@ -54,14 +102,14 @@ dislike_bubble = NodePath("ThoughtBubblePoint/DislikeBubble")
 collision_mask = 2
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
-position = Vector2(0, 3)
+position = Vector2(-6, 7.5)
 shape = SubResource("RectangleShape2D_xss0h")
 one_way_collision_margin = 0.0
 
 [node name="Sprite2D" type="AnimatedSprite2D" parent="."]
+scale = Vector2(0.7, 0.7)
 sprite_frames = SubResource("SpriteFrames_846g6")
-frame = 1
-frame_progress = 0.12149496
+frame_progress = 0.51170045
 
 [node name="VisibleOnScreenNotifier2D" type="VisibleOnScreenNotifier2D" parent="."]
 
