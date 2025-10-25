@@ -70,3 +70,5 @@ https://ghostpixxells.itch.io/pixel-mart
 https://piiixl.itch.io/food
 https://ninjikin.itch.io/treasure
 https://kenney.nl/assets/emotes-pack
+https://free-game-assets.itch.io/free-townspeople-cyberpunk-pixel-art
+https://free-game-assets.itch.io/free-extra-animations-for-platformer-characters

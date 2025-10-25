@@ -1,6 +1,6 @@
-use godot::{classes::{Button, INode2D, Node2D, RichTextLabel}, prelude::*};
+use godot::{classes::{AnimatedSprite2D, Button, INode2D, Node2D, RichTextLabel}, prelude::*};
 
-use crate::{customer::Customer, enums::customer_feedback::CustomerFeedback, singletons::game_data::GameDataSingleton};
+use crate::{customer::Customer, enums::customer_feedback::CustomerFeedback, get_node_by_abs_path, singletons::game_data::GameDataSingleton};
 
 struct CustomerOrder {
     customer: Gd<Customer>,
@@ -21,6 +21,7 @@ pub struct SellingPhase {
     love_count: i32,
     like_count: i32,
     dislike_count: i32,
+    animated_sprite: Option<Gd<AnimatedSprite2D>>,
     
     // Change or add your own properties here
     #[export]
@@ -59,6 +60,7 @@ impl INode2D for SellingPhase {
             stock_label: None,
             skip_button: None,
             fast_forward_button: None,
+            animated_sprite: None,
             current_time: (8 * 60) as f64, // Start at 8:00 AM
             fast_forward_speed: 1 as f64, // Normal speed
             end_time: (17 * 60) as f64, // End at 8:00 PM
@@ -91,6 +93,10 @@ impl INode2D for SellingPhase {
             .signals()
             .pressed()
             .connect_other(&*self, Self::toggle_fast_forward);
+
+        self.animated_sprite = Some(get_node_by_abs_path!(self.base(), "SellingPhase/Cart/AnimatedSprite2D"));
+        let animated_sprite = self.animated_sprite.as_mut().unwrap();
+        animated_sprite.play();
     }
 
     fn process(&mut self, _delta: f64) {

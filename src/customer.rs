@@ -40,7 +40,7 @@ impl ICharacterBody2D for Customer {
             speed_multiplier: 100.0,
             visibility_notifier: None,
             customer_state: CustomerState::Walking,
-            walk_direction: Vector2::LEFT,
+            walk_direction: Vector2::RIGHT,
             animated_sprite: None,
             variant: None,
             love_bubble: None,
@@ -93,7 +93,7 @@ impl Customer {
 
     pub fn set_walk_direction(&mut self, direction: Vector2) {
         self.walk_direction = direction;
-        if self.walk_direction == Vector2::RIGHT {
+        if self.walk_direction == Vector2::LEFT {
             let animated_sprite = self.animated_sprite.as_mut().unwrap();
             animated_sprite.set_flip_h(true);
         }
@@ -112,9 +112,11 @@ impl Customer {
         godot_print!("Customer deciding to queue: {}", is_buying);
         if is_buying {
             self.customer_state = CustomerState::Waiting;
+            self.animated_sprite.as_mut().unwrap().set_animation("idle");
             self.make_order();
         } else {
             self.customer_state = CustomerState::Leaving;
+            self.animated_sprite.as_mut().unwrap().set_animation("default");
         }
     }
 
@@ -125,6 +127,7 @@ impl Customer {
 
     pub fn complete_order(&mut self, is_bought: bool) -> CustomerFeedback {
         self.customer_state = CustomerState::Leaving;
+        self.animated_sprite.as_mut().unwrap().set_animation("default");
 
         if !is_bought {
             return CustomerFeedback::None;

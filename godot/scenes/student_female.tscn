@@ -113,7 +113,7 @@ sprite_frames = SubResource("SpriteFrames_846g6")
 [node name="VisibleOnScreenNotifier2D" type="VisibleOnScreenNotifier2D" parent="."]
 
 [node name="ThoughtBubblePoint" type="Node2D" parent="."]
-position = Vector2(0, -19)
+position = Vector2(-5, -11)
 
 [node name="LoveBubble" type="Sprite2D" parent="ThoughtBubblePoint"]
 visible = false
