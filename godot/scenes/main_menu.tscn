@@ -44,7 +44,8 @@ grow_vertical = 2
 [node name="RichTextLabel" type="RichTextLabel" parent="Panel/VBoxContainer"]
 layout_mode = 2
 theme_override_colors/default_color = Color(0.94509804, 0.94509804, 0.9490196, 1)
-text = "Working Title"
+text = "Cafe on Wheels
+"
 fit_content = true
 horizontal_alignment = 1
 
