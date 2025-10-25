@@ -12,4 +12,5 @@ macos.debug =            "res://../target/debug/libjago.dylib"
 macos.release =          "res://../target/release/libjago.dylib"
 macos.debug.arm64 =      "res://../target/debug/libjago.dylib"
 macos.release.arm64 =    "res://../target/release/libjago.dylib"
-        
+web.debug.wasm32 = "res://../target/wasm32-unknown-emscripten/debug/jago.wasm"
+web.release.wasm32 = "res://../target/wasm32-unknown-emscripten/release/jago.wasm"
