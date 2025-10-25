@@ -76,10 +76,10 @@ layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
-offset_left = 82.0
-offset_top = 49.0
-offset_right = -82.0
-offset_bottom = -49.0
+offset_left = 58.0
+offset_top = 36.0
+offset_right = -58.0
+offset_bottom = -36.0
 grow_horizontal = 2
 grow_vertical = 2
 theme_override_styles/panel = SubResource("StyleBoxFlat_l6cm7")
@@ -123,6 +123,18 @@ layout_mode = 2
 theme_override_font_sizes/font_size = 6
 text = "kenney - Emotes Pack"
 uri = "https://kenney.nl/assets/emotes-pack"
+
+[node name="LinkButton5" type="LinkButton" parent="Panel/CreditPanel/VBoxContainer"]
+layout_mode = 2
+theme_override_font_sizes/font_size = 6
+text = "free-game-assets - Free Townspeople Cyberpunk"
+uri = "https://free-game-assets.itch.io/free-townspeople-cyberpunk-pixel-arthttps://free-game-assets.itch.io/free-extra-animations-for-platformer-characters"
+
+[node name="LinkButton6" type="LinkButton" parent="Panel/CreditPanel/VBoxContainer"]
+layout_mode = 2
+theme_override_font_sizes/font_size = 6
+text = "free-game-assets - Free Extra Animations for Platformer Characters"
+uri = "https://free-game-assets.itch.io/free-extra-animations-for-platformer-characters"
 
 [node name="CloseButton" type="Button" parent="Panel/CreditPanel/VBoxContainer"]
 layout_mode = 2
