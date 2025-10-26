@@ -20,3 +20,5 @@ godot/mono_crash.*.json
 
 # Build output
 godot/builds/
+
+godot/.keystore/*
